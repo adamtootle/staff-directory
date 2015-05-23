@@ -23,6 +23,12 @@ Features:
 <li>Support for multiple templates. You can choose a default as well as choose set a template for use with the [staff-directory] shortcode.</li>
 </ul>
 
+Questions?
+
+Tweet me - [@adamtootle](https://twitter.com/adamtootle)
+Submit pull requests to the [Github report](https://github.com/adamtootle/staff-directory).
+Or you can always submit support requests at [wordpress.org support forums](https://wordpress.org/support/plugin/staff-directory).
+
 == Installation ==
 
 1. Upload the `staff-directory` directory to the `/wp-content/plugins/` directory
