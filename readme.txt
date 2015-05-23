@@ -3,7 +3,7 @@ Contributors: adamtootle
 Tags: staff directory, staff, employees, team members, faculty
 Requires at least: 2.3.0
 Tested up to: 4.2.1
-Stable Tag: tags/0.9.8
+Stable Tag: tags/1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Staff Directory is deigned to help you easily display a list of staff/faculty/team members. It also supports an array of options for the [staff-directory] shortcode.
+Staff Directory is deigned to help you easily display a list of staff/faculty/team members.
 
 Features:
 
@@ -20,7 +20,7 @@ Features:
 <li>Staff categories</li>
 <li>Ability to create custom staff details fields, complete with auto-generating shortcodes for custom fields</li>
 <li>2 default templates for displaying staff</li>
-<li>Custom templates for displaying staff</li>
+<li>Support for multiple templates. You can choose a default as well as choose set a template for use with the [staff-directory] shortcode.</li>
 </ul>
 
 == Installation ==
@@ -35,7 +35,24 @@ Features:
 
 Staff categories are now managed using the internal WordPress category management system. This means that old staff category IDs could not be maintained during the import. The plugin has added support for showing the new category IDs in the Staff Categories table so you can easily get the new IDs in order to update existing shortcodes.
 
+== Screenshots ==
+
+1. Create/view staff just like any other WordPress post/page
+2. Edit staff just like any other WordPress post/page
+3. Create custom staff categories
+4. Set custom staff details and create custom templates
+
 == Changelog ==
+
+= 1.0.0 =
+Official 1.0.0 release! After having not updated this plugin for nearly 5 years I picked it back up a few weeks ago. I had a few ideas in mind for features going forward and I believe the 1.0.0 release is ready. This is definitely not the end of development on this plugin. I still have some ideas for features that I'll continue to work on developing.
+
+Updates in the 1.0.0 release:
+<ul>
+<li>Fixed a bug in the new Staff Details Fields feature that caused the generated shortcodes to not work sometimes.</li>
+<li>Added supoprt for multiple custom templates! You can now choose a default template or override the default per use of the [staff-directory] shortcode using the `template` option.</li>
+<li>Added a new Staff Directory shortcode TinyMCE button so you can easily generate the [staff-directory] shortcode from the WordPress editor without having to know all of the available options.</li>
+</ul>
 
 = 0.9.8 =
 <ul>
