@@ -296,17 +296,17 @@ EOT;
   		$current_staff_markup = str_replace($accepted_single_tags, $replace_single_values, $loop_markup);
   		$current_staff_markup = str_replace($accepted_formatted_tags, $replace_formatted_values, $current_staff_markup);
 
-      preg_match_all("/\[[a-z]+_?[a-z]+\]/", $current_staff_markup, $other_matches);
+      preg_match_all("/\[(.*?)\]/", $current_staff_markup, $other_matches);
       $staff_meta_fields = get_option('staff_meta_fields');
 
-      if($staff_meta_fields != '' && count($other_matches) > 0) {
-        foreach($other_matches as $match) {
+      if($staff_meta_fields != '' && count($other_matches[0]) > 0) {
+        foreach($other_matches[0] as $match) {
           foreach($staff_meta_fields as $field) {
             $meta_key = $field['slug'];
-            $shortcode_without_brackets = substr($match[0], 1, strlen($match[0]) - 2);
+            $shortcode_without_brackets = substr($match, 1, strlen($match) - 2);
             if($meta_key == $shortcode_without_brackets) {
               $meta_value = get_post_meta(get_the_ID(), $meta_key, true);
-              $current_staff_markup = str_replace($match[0], $meta_value, $current_staff_markup);
+              $current_staff_markup = str_replace($match, $meta_value, $current_staff_markup);
             }
           }
         }
