@@ -36,6 +36,7 @@ class StaffDirectory {
           'thumbnail'
         ),
         'public' => true,
+        'menu_icon' => 'dashicons-groups',
         'taxonomies' => array('staff_category')
       )
     );
