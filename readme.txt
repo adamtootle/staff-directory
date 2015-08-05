@@ -3,7 +3,7 @@ Contributors: adamtootle
 Tags: staff directory, staff, employees, team members, faculty
 Requires at least: 2.3.0
 Tested up to: 4.2.2
-Stable Tag: tags/1.0.1
+Stable Tag: tags/1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,13 @@ Staff categories are now managed using the internal WordPress category managemen
 4. Set custom staff details and create custom templates
 
 == Changelog ==
+
+= 1.0.2 =
+<ul>
+<li>Added support for [category all=true] in the template tags to show a comma-separated list of all of a member's categories.</li>
+<li>Added some documentation to the Help section to better explain proper use of the custom template support in the [staff-directory] shortcode.</li>
+<li>Added a nice new admin menu icon thanks to @dryanmedia on Github.</li>
+</ul>
 
 = 1.0.0 =
 Official 1.0.0 release! After having not updated this plugin for nearly 5 years I picked it back up a few weeks ago. I had a few ideas in mind for features going forward and I believe the 1.0.0 release is ready. This is definitely not the end of development on this plugin. I still have some ideas for features that I'll continue to work on developing.
