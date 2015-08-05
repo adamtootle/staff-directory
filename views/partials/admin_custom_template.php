@@ -4,7 +4,7 @@
   <?php else: ?>
     <input type="radio" name="staff_templates[slug]" value="custom_<?php echo $template['index']; ?>">
   <?php endif; ?>
-  Custom Template <?php echo $template['index']; ?> <a href="#" class="fa fa-angle-down custom-template-dropdown-arrow"></a>
+  Custom Template <?php echo $template['index']; ?> (<?php echo $template['slug']; ?>) <a href="#" class="fa fa-angle-down custom-template-dropdown-arrow"></a>
 </p>
 
 <div class="custom-template">

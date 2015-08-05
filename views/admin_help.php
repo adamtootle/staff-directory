@@ -24,6 +24,19 @@
 </div>
 
 <div class="help-topic" id="staff-templates">
+  <h2>Staff Directory Templates</h2>
+
+  <p>
+    The the <code>[staff-directory]</code> shortcode supports a default template (set in <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-settings">Staff Settings</a>) or custom templates per use.
+  </p>
+
+  <p>
+    Each template is identified by a slug. The provided templates are "List" and "Grid", with their slugs being "list" and "grid" respectively. Each custom template uses the slug format "custom_[n]" where [n] is the custom template ID.
+    So to use "Custom Template 1" you would use the shortcode like so: <code>[staff-directory template=custom_1]</code>.
+  </p>
+</div>
+
+<div class="help-topic" id="staff-template-tags">
   <h2>Staff Directory Template Tags</h2>
 
   <p>

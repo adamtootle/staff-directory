@@ -150,9 +150,9 @@
   <div class="form-group">
     <h2>Templates</h2>
 
-    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-templates">Staff Help page</a></p>
+    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
 
-    <p>Templates can be chosen manually with the [staff-directory] shortcode, or you can choose to set a default template here:</p>
+    <p>Templates can be chosen manually with the [staff-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
 
     <p>
       <?php if($current_template == 'list'): ?>
@@ -160,7 +160,7 @@
       <?php else: ?>
         <input type="radio" name="staff_templates[slug]" value="list" />
       <?php endif; ?>
-      List
+      List (list)
     </p>
 
     <p>
@@ -169,7 +169,7 @@
       <?php else: ?>
         <input type="radio" name="staff_templates[slug]" value="grid" />
       <?php endif; ?>
-      Grid
+      Grid (grid)
     </p>
 
     <?php foreach($custom_templates as $template): ?>
