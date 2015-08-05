@@ -26,7 +26,7 @@ Features:
 Questions?
 
 Tweet me - [@adamtootle](https://twitter.com/adamtootle)
-Submit pull requests to the [Github report](https://github.com/adamtootle/staff-directory).
+Submit pull requests to the [Github repo](https://github.com/adamtootle/staff-directory).
 Or you can always submit support requests at [wordpress.org support forums](https://wordpress.org/support/plugin/staff-directory).
 
 == Installation ==

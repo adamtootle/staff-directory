@@ -281,14 +281,20 @@ EOT;
       $staff_website_link = $staff_website != '' ? "<a href=\"$staff_website\" target=\"_blank\">View website</a>" : "";
 
       $staff_categories = wp_get_post_terms(get_the_ID(), 'staff_category');
+      $all_staff_categories = "";
+
       if (count($staff_categories) > 0) {
         $staff_category = $staff_categories[0]->name;
+        foreach($staff_categories as $category) {
+          $all_staff_categories .= $category->name . ", ";
+        }
+        $all_staff_categories = substr($all_staff_categories, 0, strlen($all_staff_categories) - 2);
       } else {
         $staff_category = "";
       }
 
-      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]", "[category]");
-  		$replace_single_values = array($staff_name, $photo_url, $staff_bio, $staff_category);
+      $accepted_single_tags = array("[name]", "[photo_url]", "[bio]", "[category]", "[category all=true]");
+  		$replace_single_values = array($staff_name, $photo_url, $staff_bio, $staff_category, $all_staff_categories);
 
   		$accepted_formatted_tags = array("[name_header]", "[photo]", "[email_link]", "[bio_paragraph]", "[website_link]");
   		$replace_formatted_values = array("<h3>$staff_name</h3>", $photo_tag, $staff_email_link, "<p>$staff_bio</p>", $staff_website_link);
