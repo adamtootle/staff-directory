@@ -251,7 +251,7 @@ EOT;
 
   	$output .= "<style type=\"text/css\">$template_css</style>";
 
-    if(strpos($template_html, '[staff_loop]')) {
+    if(strpos($template_html, '[staff_loop]') !== false) {
       $before_loop_markup = substr($template_html, 0, strpos($template_html, "[staff_loop]"));
       $after_loop_markup = substr($template_html, strpos($template_html, "[/staff_loop]") + strlen("[/staff_loop]"), strlen($template_html) - strpos($template_html, "[/staff_loop]"));
       $loop_markup = str_replace("[staff_loop]", "", substr($template_html, strpos($template_html, "[staff_loop]"), strpos($template_html, "[/staff_loop]") - strpos($template_html, "[staff_loop]")));
