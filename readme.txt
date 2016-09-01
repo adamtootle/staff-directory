@@ -50,6 +50,11 @@ Staff categories are now managed using the internal WordPress category managemen
 
 == Changelog ==
 
+= 1.0.3 =
+<ul>
+<li>Adds support for meta_key sorting in the listing shortcode.</li>
+</ul>
+
 = 1.0.2 =
 <ul>
 <li>Added support for [category all=true] in the template tags to show a comma-separated list of all of a member's categories.</li>
