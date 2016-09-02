@@ -17,6 +17,7 @@ class StaffDirectoryAdmin {
 	static function settings() {
 
 		$staff_settings = StaffSettings::sharedInstance();
+		$did_update_options = false;
 
 		if ( isset( $_GET['delete-template'] ) ) {
 			$staff_settings->deleteCustomTemplate( $_GET['delete-template'] );
