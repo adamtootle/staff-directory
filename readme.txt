@@ -53,6 +53,7 @@ Staff categories are now managed using the internal WordPress category managemen
 = 1.0.3 =
 <ul>
 <li>Adds support for meta_key sorting in the listing shortcode.</li>
+<li>Changes the default sorting of the staff admin listing to be by name.</li>
 </ul>
 
 = 1.0.2 =
