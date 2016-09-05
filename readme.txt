@@ -2,8 +2,8 @@
 Contributors: adamtootle
 Tags: staff directory, staff, employees, team members, faculty
 Requires at least: 2.3.0
-Tested up to: 4.2.2
-Stable Tag: tags/1.0.2
+Tested up to: 4.6
+Stable Tag: tags/1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,13 @@ Staff categories are now managed using the internal WordPress category managemen
 4. Set custom staff details and create custom templates
 
 == Changelog ==
+
+= 1.0.3 =
+<ul>
+<li>Adds support for meta_key sorting in the listing shortcode. e.g. [staff-directory cat=44 orderby=meta_value_num order=asc meta_key=order]</li>
+<li>Changes the default sorting of the staff admin listing to be by name.</li>
+<li>Fixes uninitialized variable PHP notice. Seen when error printing is on.</li>
+</ul>
 
 = 1.0.2 =
 <ul>
