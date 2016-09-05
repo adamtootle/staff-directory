@@ -25,9 +25,15 @@ Features:
 
 Questions?
 
+Preferred - Submit pull requests to the [Github repo](https://github.com/adamtootle/staff-directory).
 Tweet me - [@adamtootle](https://twitter.com/adamtootle)
-Submit pull requests to the [Github repo](https://github.com/adamtootle/staff-directory).
 Or you can always submit support requests at [wordpress.org support forums](https://wordpress.org/support/plugin/staff-directory).
+
+Special thanks to those who have helped out on Github repo:
+
+[0aveRyan](https://github.com/0aveRyan)
+[ethanclevenger91](https://github.com/ethanclevenger91)
+[timnolte](https://github.com/timnolte)
 
 == Installation ==
 
