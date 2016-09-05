@@ -255,7 +255,9 @@ class StaffDirectory {
 			update_option( 'staff_directory_template_slug', 'list' );
 		}
 
-		if ( get_option( 'staff_directory_html_template' ) == '' ) {
+		$has_custom_templates = count(StaffSettings::sharedInstance()->getCustomStaffTemplates()) > 0;
+
+		if ( get_option( 'staff_directory_html_template' ) == '' && !$has_custom_templates ) {
 			$default_html_template = <<<EOT
 <div class="staff-directory">
 
@@ -273,7 +275,7 @@ EOT;
 			update_option( 'staff_directory_html_template', $default_html_template );
 		}
 
-		if ( get_option( 'staff_directory_css_template' ) == '' ) {
+		if ( get_option( 'staff_directory_css_template' ) == '' && !$has_custom_templates ) {
 			$default_css_template = <<<EOT
 .staff-directory-divider{
   border-top: solid black thin;
