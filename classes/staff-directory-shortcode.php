@@ -1,8 +1,8 @@
 <?php
 
-class StaffDirectoryShortcode {
+class Staff_Directory_Shortcode {
 	static function register_shortcode() {
-		add_shortcode( 'staff-directory', array( 'StaffDirectoryShortcode', 'shortcode' ) );
+		add_shortcode( 'staff-directory', array( 'Staff_Directory_Shortcode', 'shortcode' ) );
 	}
 
 	static function shortcode( $params ) {
@@ -16,17 +16,17 @@ class StaffDirectoryShortcode {
 
 		$output = '';
 
-		$staff_settings = StaffSettings::sharedInstance();
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 		if ( isset( $params['template'] ) ) {
 			$template = $params['template'];
 		} else {
-			$template = $staff_settings->getCurrentDefaultStaffTemplate();
+			$template = $staff_settings->get_current_default_staff_template();
 		}
 
 		// get all staff
 		$param = "id=$id&cat=$cat&orderby=$orderby&order=$order&meta_key=$meta_key";
 
-		return StaffDirectoryShortcode::show_staff_directory( $param, $template );
+		return Staff_Directory_Shortcode::show_staff_directory( $param, $template );
 	}
 
 	static function show_staff_directory( $param = null, $template = null ) {
@@ -73,13 +73,13 @@ class StaffDirectoryShortcode {
 
 		switch ( $template ) {
 			case 'list':
-				$output = StaffDirectoryShortcode::html_for_list_template( $staff_query );
+				$output = Staff_Directory_Shortcode::html_for_list_template( $staff_query );
 				break;
 			case 'grid':
-				$output = StaffDirectoryShortcode::html_for_grid_template( $staff_query );
+				$output = Staff_Directory_Shortcode::html_for_grid_template( $staff_query );
 				break;
 			default:
-				$output = StaffDirectoryShortcode::html_for_custom_template( $template, $staff_query );
+				$output = Staff_Directory_Shortcode::html_for_custom_template( $template, $staff_query );
 				break;
 
 		}
@@ -248,11 +248,11 @@ EOT;
 	}
 
 	static function html_for_custom_template( $template_slug, $wp_query ) {
-		$staff_settings = StaffSettings::sharedInstance();
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 
 		$output = '';
 
-		$template      = $staff_settings->getCustomStaffTemplateForSlug( $template_slug );
+		$template      = $staff_settings->get_Custom_staff_template_for_slug( $template_slug );
 		$template_html = stripslashes( $template['html'] );
 		$template_css  = stripslashes( $template['css'] );
 

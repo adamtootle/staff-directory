@@ -173,7 +173,7 @@
     </p>
 
     <?php foreach($custom_templates as $template): ?>
-      <?php require(plugin_dir_path(__FILE__) . '/partials/admin_custom_template.php'); ?>
+      <?php require(plugin_dir_path(__FILE__) . '/partials/admin-custom-template.php'); ?>
     <?php endforeach; ?>
 
     <p>

@@ -56,7 +56,7 @@
     <li><code>[bio_paragraph]</code> - the staff member's bio with &lt;p&gt; tags</li>
     <li><code>[category]</code> - the staff member's category (first category only)</li>
     <li><code>[category all=true]</code> - all of the staff member's categories in a comma-separated list</li>
-    <li><code>[email_link]</code> (deprecated, requires and Email field above)</li>
+    <li><code>[email_link]</code> (deprecated, requires an Email field above)</li>
     <li><code>[website_link]</code> (deprecated, requires a Website field above)</li>
   </ul>
 </div>
