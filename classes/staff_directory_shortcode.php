@@ -73,7 +73,7 @@ class StaffDirectoryShortcode {
 
 		$staff_query = new WP_Query( $query_args );
 
-		if ($wp_query->have_posts()) {
+		if ( $staff_query->have_posts() ) {
 			switch ( $template ) {
 				case 'list':
 					$output = StaffDirectoryShortcode::html_for_list_template( $staff_query );
