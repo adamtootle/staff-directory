@@ -86,6 +86,9 @@ class StaffDirectoryShortcode {
 					break;
 			}
 		}
+		else {
+			$output = '';
+		}
 
 		wp_reset_query();
 
