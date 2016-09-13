@@ -54,7 +54,9 @@ class StaffDirectoryShortcode {
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'staff_category',
-					'terms'    => array( $cat )
+					'terms'    => explode( ',', $cat ),
+					'field'    => 'slug',
+					'operator' => 'AND'
 				)
 			);
 		}
