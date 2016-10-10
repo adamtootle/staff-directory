@@ -216,35 +216,15 @@ class StaffDirectoryShortcode {
             $template_contents = file_get_contents( STAFF_LIST_TEMPLATES . $cur_template);
             return do_shortcode($template_contents);
         } else {
-            echo $slug;
+            $staff_settings = StaffSettings::sharedInstance();
+            $output        = "";
+            $template      = $staff_settings->getCustomStaffTemplateForSlug( $slug );
+            $template_html = stripslashes( $template['html'] );
+            $template_css  = stripslashes( $template['css'] );
+
+            $output .= "<style type='text/css'>$template_css</style>";
+            $output .= do_shortcode($template_html);
+            return $output;
         }
-
     }
-
-	static function html_for_custom_template( $template_slug, $wp_query ) {
-		$staff_settings = StaffSettings::sharedInstance();
-
-		$output = '';
-
-		$template      = $staff_settings->getCustomStaffTemplateForSlug( $template_slug );
-		$template_html = stripslashes( $template['html'] );
-		$template_css  = stripslashes( $template['css'] );
-
-		$output .= "<style type=\"text/css\">$template_css</style>";
-
-		if ( strpos( $template_html, '[staff_loop]' ) ) {
-			$before_loop_markup = substr( $template_html, 0, strpos( $template_html, "[staff_loop]" ) );
-			$after_loop_markup  = substr( $template_html, strpos( $template_html, "[/staff_loop]" ) + strlen( "[/staff_loop]" ), strlen( $template_html ) - strpos( $template_html, "[/staff_loop]" ) );
-			$loop_markup        = str_replace( "[staff_loop]", "", substr( $template_html, strpos( $template_html, "[staff_loop]" ), strpos( $template_html, "[/staff_loop]" ) - strpos( $template_html, "[staff_loop]" ) ) );
-			$output .= $before_loop_markup;
-		} else {
-			$loop_markup = $template_html;
-		}
-
-		if ( isset( $after_loop_markup ) ) {
-			$output .= $after_loop_markup;
-		}
-
-		return $output;
-	}
 }
