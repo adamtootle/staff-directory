@@ -19,6 +19,7 @@ class StaffDirectoryShortcode {
             'photo_url',
             'bio',
             'bio_paragraph',
+            'profile_link',
             'category'
         );
 
@@ -99,6 +100,20 @@ class StaffDirectoryShortcode {
 
     static function bio_paragraph_shortcode(){
         return "<p>" . self::bio_shortcode() . "</p>";
+    }
+
+    static function profile_link_shortcode($atts, $content = NULL){
+        $atts = shortcode_atts( array(
+            'target'     => "_self",
+            'inner_text' => "Profile"
+        ), $atts);
+        $profile_link = get_permalink( get_the_ID() );
+
+        if(!empty($content)) {
+            return "<a href='" . $profile_link . "' target='" . $atts['target'] . "'>" . do_shortcode($content) . "</a>";
+        } else {
+            return "<a href='" . $profile_link . "' target='" . $atts['target'] . "'>" . $atts['inner_text'] . "</a>";
+        }
     }
 
     static function category_shortcode($atts){
