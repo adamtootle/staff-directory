@@ -155,21 +155,15 @@
     <p>Templates can be chosen manually with the [staff-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
 
     <p>
-      <?php if($current_template == 'list'): ?>
-        <input type="radio" name="staff_templates[slug]" value="list" checked />
-      <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="list" />
-      <?php endif; ?>
-      List (list)
+        <input type="radio" name="staff_templates[slug]" value="list"
+        <?php echo ($current_template == 'list' ? "checked" : "") ?> />
+        List (list)
     </p>
 
     <p>
-      <?php if($current_template == 'grid'): ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" checked />
-      <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" />
-      <?php endif; ?>
-      Grid (grid)
+        <input type="radio" name="staff_templates[slug]" value="grid"
+        <?php echo ($current_template == 'grid' ? "checked" : "") ?> />
+        Grid (grid)
     </p>
 
     <?php foreach($custom_templates as $template): ?>
