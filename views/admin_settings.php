@@ -156,13 +156,13 @@
 
     <p>
         <input type="radio" name="staff_templates[slug]" value="list"
-        <?php echo ($current_template == 'list' ? "checked" : "") ?> />
+        <?php checked( $current_template, 'list', true ); ?> />
         List (list)
     </p>
 
     <p>
         <input type="radio" name="staff_templates[slug]" value="grid"
-        <?php echo ($current_template == 'grid' ? "checked" : "") ?> />
+        <?php checked( $current_template, 'grid', true ); ?> />
         Grid (grid)
     </p>
 
