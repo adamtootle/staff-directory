@@ -23,6 +23,16 @@ class StaffDirectoryAdmin {
 			$staff_settings->deleteCustomTemplate( $_GET['delete-template'] );
 		}
 
+		if ( isset( $_POST['staff_single_template'] ) ) {
+            update_option( 'staff_single_template', $_POST['staff_single_template'] );
+			$did_update_options = true;
+		} else {
+            if ( get_option( 'staff_single_template' ) == '' ) {
+    			update_option( 'staff_single_template', 'default' );
+                $did_update_options = true;
+    		}
+        }
+
 		if ( isset( $_POST['staff_templates']['slug'] ) ) {
 			$staff_settings->updateDefaultStaffTemplateSlug( $_POST['staff_templates']['slug'] );
 			$did_update_options = true;

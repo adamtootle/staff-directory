@@ -1,9 +1,145 @@
 <?php
 
 class StaffDirectoryShortcode {
+
+    public static $staff_query;
+
 	static function register_shortcode() {
+        //Main shortcode to initiate plugin
 		add_shortcode( 'staff-directory', array( 'StaffDirectoryShortcode', 'shortcode' ) );
+
+        //Shortcode to initiate the loop
+        add_shortcode( 'staff_loop', array( 'StaffDirectoryShortcode', 'staff_loop_shortcode' ) );
+
+        //List of predefined shortcode tags
+        $predefined_shortcodes = array(
+            'name',
+            'name_header',
+            'photo',
+            'photo_url',
+            'bio',
+            'bio_paragraph',
+            'profile_link',
+            'category'
+        );
+
+        //Add shortcodes for all $predefined_shortcodes, link to function by
+        //the name of $code_shortcode
+        foreach($predefined_shortcodes as $code){
+            add_shortcode( $code, array( 'StaffDirectoryShortcode', $code . '_shortcode' ) );
+        }
+
+        //Retrieve custom fields
+        $staff_meta_fields = get_option( 'staff_meta_fields' );
+
+        if ( !empty($staff_meta_fields) ) {
+            foreach ( $staff_meta_fields as $field ) {
+                $meta_key = $field['slug'];
+                add_shortcode( $meta_key, array( 'StaffDirectoryShortcode', 'meta_shortcode' ) );
+            }
+        }
 	}
+
+    /*** Begin shortcode functions ***/
+
+    static function meta_shortcode( $atts, $content = NULL, $tag) {
+        $meta_key             = $tag;
+        $meta_value           = get_post_meta( get_the_ID(), $meta_key, true );
+        if($meta_value) {
+            return $meta_value;
+        } else {
+            return ""; //print nothing and remove tag if no value
+        }
+
+    }
+
+    static function staff_loop_shortcode( $atts, $content = NULL ) {
+
+        $query = StaffDirectoryShortcode::$staff_query;
+        $output = "";
+
+        if ( $query->have_posts() ) {
+
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $output .= do_shortcode($content);
+            }
+
+        }
+        return $output;
+    }
+
+    static function name_shortcode(){
+        return get_the_title();
+    }
+
+    static function name_header_shortcode(){
+        return "<h3>" . self::name_shortcode() . "</h3>";
+    }
+
+    static function photo_url_shortcode(){
+        if ( has_post_thumbnail() ) {
+            $attachment_array = wp_get_attachment_image_src( get_post_thumbnail_id() );
+            return $attachment_array[0];
+        } else {
+            return "";
+        }
+    }
+
+    static function photo_shortcode(){
+        if(!empty(self::photo_url_shortcode())){
+            return '<img src="' . self::photo_url_shortcode() . '" />';
+        } else {
+            return "";
+        }
+    }
+
+    static function bio_shortcode(){
+        return get_the_content();
+    }
+
+    static function bio_paragraph_shortcode(){
+        return "<p>" . self::bio_shortcode() . "</p>";
+    }
+
+    static function profile_link_shortcode($atts, $content = NULL){
+        $atts = shortcode_atts( array(
+            'target'     => "_self",
+            'inner_text' => "Profile"
+        ), $atts);
+        $profile_link = get_permalink( get_the_ID() );
+
+        if(!empty($content)) {
+            return "<a href='" . $profile_link . "' target='" . $atts['target'] . "'>" . do_shortcode($content) . "</a>";
+        } else {
+            return "<a href='" . $profile_link . "' target='" . $atts['target'] . "'>" . $atts['inner_text'] . "</a>";
+        }
+    }
+
+    static function category_shortcode($atts){
+        $atts = shortcode_atts( array(
+            'all' => false,
+        ), $atts);
+        $staff_categories     = wp_get_post_terms( get_the_ID(), 'staff_category' );
+        $all_staff_categories = "";
+
+        if ( count( $staff_categories ) > 0 ) {
+            $staff_category = $staff_categories[0]->name;
+            foreach ( $staff_categories as $category ) {
+                $all_staff_categories .= $category->name . ", ";
+            }
+            $all_staff_categories = substr( $all_staff_categories, 0, strlen( $all_staff_categories ) - 2 );
+        } else {
+            $staff_category = "";
+        }
+
+        if( $atts['all'] === true ) {
+            return $all_staff_categories;
+        } else {
+            return $staff_category;
+        }
+
+    }
 
 	static function shortcode( $params ) {
 		extract( shortcode_atts( array(
@@ -28,6 +164,8 @@ class StaffDirectoryShortcode {
 
 		return StaffDirectoryShortcode::show_staff_directory( $param, $template );
 	}
+
+    /*** End shortcode functions ***/
 
 	static function show_staff_directory( $param = null, $template = null ) {
 		parse_str( $param );
@@ -69,287 +207,39 @@ class StaffDirectoryShortcode {
 			$query_args['meta_key'] = $meta_key;
 		}
 
-		$staff_query = new WP_Query( $query_args );
+        //Store in class scope so we can access query from staff_loop shortcode
+		StaffDirectoryShortcode::$staff_query = new WP_Query( $query_args );
 
-		switch ( $template ) {
-			case 'list':
-				$output = StaffDirectoryShortcode::html_for_list_template( $staff_query );
-				break;
-			case 'grid':
-				$output = StaffDirectoryShortcode::html_for_grid_template( $staff_query );
-				break;
-			default:
-				$output = StaffDirectoryShortcode::html_for_custom_template( $template, $staff_query );
-				break;
+		$output = self::retrieve_template_html($template);
 
-		}
-
-		wp_reset_query();
+        wp_reset_query();
 
 		return $output;
 	}
 
-	static function html_for_list_template( $wp_query ) {
-		$output = <<<EOT
-      <style type="text/css">
-        .clearfix {
-          clear: both;
+    static function retrieve_template_html($slug) {
+
+        // $slug => 'File Name'
+        $template_slugs = array(
+            'grid' => 'staff_grid.php',
+            'list' => 'staff_list.php'
+        );
+
+        $cur_template = $template_slugs[$slug];
+
+        if ($cur_template) {
+            $template_contents = file_get_contents( STAFF_LIST_TEMPLATES . $cur_template);
+            return do_shortcode($template_contents);
+        } else {
+            $staff_settings = StaffSettings::sharedInstance();
+            $output        = "";
+            $template      = $staff_settings->getCustomStaffTemplateForSlug( $slug );
+            $template_html = stripslashes( $template['html'] );
+            $template_css  = stripslashes( $template['css'] );
+
+            $output .= "<style type='text/css'>$template_css</style>";
+            $output .= do_shortcode($template_html);
+            return $output;
         }
-        .single-staff {
-          margin-bottom: 50px;
-        }
-        .single-staff .photo {
-          float: left;
-          margin-right: 15px;
-        }
-        .single-staff .photo img {
-          max-width: 100px;
-          height: auto;
-        }
-        .single-staff .name {
-          font-size: 1em;
-          line-height: 1em;
-          margin-bottom: 4px;
-        }
-        .single-staff .position {
-          font-size: .9em;
-          line-height: .9em;
-          margin-bottom: 10px;
-        }
-        .single-staff .bio {
-          margin-bottom: 8px;
-        }
-        .single-staff .email {
-          font-size: .9em;
-          line-height: .9em;
-          margin-bottom: 10px;
-        }
-        .single-staff .phone {
-          font-size: .9em;
-          line-height: .9em;
-        }
-        .single-staff .website {
-          font-size: .9em;
-          line-height: .9em;
-        }
-      </style>
-      <div id="staff-directory-wrapper">
-EOT;
-		while ( $wp_query->have_posts() ) {
-			$wp_query->the_post();
-
-			$name     = get_the_title();
-			$position = get_post_meta( get_the_ID(), 'position', true );
-			$bio      = get_the_content();
-
-			if ( has_post_thumbnail() ) {
-				$attachment_array = wp_get_attachment_image_src( get_post_thumbnail_id() );
-				$photo_url        = $attachment_array[0];
-				$photo_html       = '<div class="photo"><img src="' . $photo_url . '" /></div>';
-			} else {
-				$photo_html = '';
-			}
-
-			if ( get_post_meta( get_the_ID(), 'email', true ) != '' ) {
-				$email      = get_post_meta( get_the_ID(), 'email', true );
-				$email_html = '<div class="email">Email: <a href="mailto:' . $email . '">' . $email . '</a></div>';
-			} else {
-				$email_html = '';
-			}
-
-			if ( get_post_meta( get_the_ID(), 'phone', true ) != '' ) {
-				$phone_html = '<div class="phone">Phone: ' . get_post_meta( get_the_ID(), 'phone', true ) . '</div>';
-			} else {
-				$phone_html = '';
-			}
-
-			if ( get_post_meta( get_the_ID(), 'website', true ) != '' ) {
-				$website      = get_post_meta( get_the_ID(), 'website', true );
-				$website_html = '<div class="website">Website: <a href="' . $website . '">' . $website . '</a></div>';
-			} else {
-				$website_html = '';
-			}
-
-			$output .= <<<EOT
-        <div class="single-staff">
-          $photo_html
-          <div class="name">$name</div>
-          <div class="position">$position</div>
-          <div class="bio">$bio</div>
-          $email_html
-          $phone_html
-          $website_html
-          <div class="clearfix"></div>
-        </div>
-EOT;
-		}
-		$output .= "</div>";
-
-		return $output;
-	}
-
-	static function html_for_grid_template( $wp_query ) {
-		$output = <<<EOT
-      <style type="text/css">
-        .clearfix {
-          clear: both;
-        }
-        .single-staff {
-          float: left;
-          width: 25%;
-          text-align: center;
-          padding: 0px 10px;
-        }
-        .single-staff .photo {
-          margin-bottom: 5px;
-        }
-        .single-staff .photo img {
-          max-width: 100px;
-          height: auto;
-        }
-        .single-staff .name {
-          font-size: 1em;
-          line-height: 1em;
-          margin-bottom: 4px;
-        }
-        .single-staff .position {
-          font-size: .9em;
-          line-height: .9em;
-          margin-bottom: 10px;
-        }
-      </style>
-      <div id="staff-directory-wrapper">
-EOT;
-		while ( $wp_query->have_posts() ) {
-			$wp_query->the_post();
-
-			$name     = get_the_title();
-			$position = get_post_meta( get_the_ID(), 'position', true );
-
-			if ( has_post_thumbnail() ) {
-				$attachment_array = wp_get_attachment_image_src( get_post_thumbnail_id() );
-				$photo_url        = $attachment_array[0];
-				$photo_html       = '<div class="photo"><img src="' . $photo_url . '" /></div>';
-			} else {
-				$photo_html = '';
-			}
-
-			$output .= <<<EOT
-        <div class="single-staff">
-          $photo_html
-          <div class="name">$name</div>
-          <div class="position">$position</div>
-        </div>
-EOT;
-		}
-		$output .= "</div>";
-
-		return $output;
-	}
-
-	static function html_for_custom_template( $template_slug, $wp_query ) {
-		$staff_settings = StaffSettings::sharedInstance();
-
-		$output = '';
-
-		$template      = $staff_settings->getCustomStaffTemplateForSlug( $template_slug );
-		$template_html = stripslashes( $template['html'] );
-		$template_css  = stripslashes( $template['css'] );
-
-		$output .= "<style type=\"text/css\">$template_css</style>";
-
-		if ( strpos( $template_html, '[staff_loop]' ) ) {
-			$before_loop_markup = substr( $template_html, 0, strpos( $template_html, "[staff_loop]" ) );
-			$after_loop_markup  = substr( $template_html, strpos( $template_html, "[/staff_loop]" ) + strlen( "[/staff_loop]" ), strlen( $template_html ) - strpos( $template_html, "[/staff_loop]" ) );
-			$loop_markup        = str_replace( "[staff_loop]", "", substr( $template_html, strpos( $template_html, "[staff_loop]" ), strpos( $template_html, "[/staff_loop]" ) - strpos( $template_html, "[staff_loop]" ) ) );
-			$output .= $before_loop_markup;
-		} else {
-			$loop_markup = $template_html;
-		}
-
-		while ( $wp_query->have_posts() ) {
-			$wp_query->the_post();
-
-			$staff_name = get_the_title();
-			if ( has_post_thumbnail() ) {
-				$attachment_array = wp_get_attachment_image_src( get_post_thumbnail_id() );
-				$photo_url        = $attachment_array[0];
-				$photo_tag        = '<img src="' . $photo_url . '" />';
-			} else {
-				$photo_url = "";
-				$photo_tag = "";
-			}
-
-			$staff_email        = get_post_meta( get_the_ID(), 'email', true );
-			$staff_email_link   = $staff_email != '' ? "<a href=\"mailto:$staff_email\">Email $staff_name</a>" : "";
-			$staff_phone_number = get_post_meta( get_the_ID(), 'phone_number', true );
-			$staff_bio          = get_the_content();
-			$staff_website      = get_post_meta( get_the_ID(), 'website', true );
-			$staff_website_link = $staff_website != '' ? "<a href=\"$staff_website\" target=\"_blank\">View website</a>" : "";
-
-			$staff_categories     = wp_get_post_terms( get_the_ID(), 'staff_category' );
-			$all_staff_categories = "";
-
-			if ( count( $staff_categories ) > 0 ) {
-				$staff_category = $staff_categories[0]->name;
-				foreach ( $staff_categories as $category ) {
-					$all_staff_categories .= $category->name . ", ";
-				}
-				$all_staff_categories = substr( $all_staff_categories, 0, strlen( $all_staff_categories ) - 2 );
-			} else {
-				$staff_category = "";
-			}
-
-			$accepted_single_tags  = array( "[name]", "[photo_url]", "[bio]", "[category]", "[category all=true]" );
-			$replace_single_values = array(
-				$staff_name,
-				$photo_url,
-				$staff_bio,
-				$staff_category,
-				$all_staff_categories
-			);
-
-			$accepted_formatted_tags  = array(
-				"[name_header]",
-				"[photo]",
-				"[email_link]",
-				"[bio_paragraph]",
-				"[website_link]"
-			);
-			$replace_formatted_values = array(
-				"<h3>$staff_name</h3>",
-				$photo_tag,
-				$staff_email_link,
-				"<p>$staff_bio</p>",
-				$staff_website_link
-			);
-
-			$current_staff_markup = str_replace( $accepted_single_tags, $replace_single_values, $loop_markup );
-			$current_staff_markup = str_replace( $accepted_formatted_tags, $replace_formatted_values, $current_staff_markup );
-
-			preg_match_all( "/\[(.*?)\]/", $current_staff_markup, $other_matches );
-			$staff_meta_fields = get_option( 'staff_meta_fields' );
-
-			if ( $staff_meta_fields != '' && count( $other_matches[0] ) > 0 ) {
-				foreach ( $other_matches[0] as $match ) {
-					foreach ( $staff_meta_fields as $field ) {
-						$meta_key                   = $field['slug'];
-						$shortcode_without_brackets = substr( $match, 1, strlen( $match ) - 2 );
-						if ( $meta_key == $shortcode_without_brackets ) {
-							$meta_value           = get_post_meta( get_the_ID(), $meta_key, true );
-							$current_staff_markup = str_replace( $match, $meta_value, $current_staff_markup );
-						}
-					}
-				}
-			}
-
-			$output .= $current_staff_markup;
-		}
-
-		if ( isset( $after_loop_markup ) ) {
-			$output .= $after_loop_markup;
-		}
-
-		return $output;
-	}
+    }
 }
