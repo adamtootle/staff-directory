@@ -91,7 +91,7 @@ class StaffDirectory {
             }
         }
         //Option not set to default, and template not found, try to load
-        //default anyway. This will ensure that if, somehow, the user 
+        //default anyway. This will ensure that if, somehow, the user
         //doesn't visit the settings page in order to instantiate the defaults,
         //we'll still be using a template specified for staff-directory, not the
         //default single.php

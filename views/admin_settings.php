@@ -148,11 +148,12 @@
   </div>
 
   <div class="form-group">
-    <h2>Single profile templates</h2>
 
     <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
 
-    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'staff_'.</p>
+    <h2>Single profile templates</h2>
+
+    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'staff_single_'.</p>
 
     <p>
         <select name="staff_single_template">
@@ -181,8 +182,6 @@
     </p>
 
     <h2>Staff directory list templates</h2>
-
-    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
 
     <p>Templates can be chosen manually with the [staff-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
 
