@@ -148,7 +148,39 @@
   </div>
 
   <div class="form-group">
-    <h2>Templates</h2>
+    <h2>Single profile templates</h2>
+
+    <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
+
+    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'staff_'.</p>
+
+    <p>
+        <select name="staff_single_template">
+            <?php
+                $val = strtolower(get_option( 'staff_single_template' ));
+
+                //May cause issues for child themes in the future, requires testing.
+                //According to https://codex.wordpress.org/Function_Reference/get_template_directory ,
+                //get_template_directory() will point to parent template directory of child themes.
+                $template_path      = get_template_directory();
+                $staff_single_files = glob($template_path . "/staff_single_*.php");
+            ?>
+            <option value="default" <?php selected( $val, 'default'); ?>>Default</option>
+            <?php
+                $output = "";
+                foreach($staff_single_files as $choice) {
+                    if(substr($choice, 0, strlen($template_path . "/")) == $template_path . "/") {
+                        $choice = substr($choice, strlen($template_path . "/"));
+                    }
+                    $value   = ' value="' . strtolower($choice) . '" ';
+                    $output .= '<option' . $value . selected( $val, $choice) . '>' . $choice . '</option>';
+                }
+                echo $output;
+            ?>
+        </select>
+    </p>
+
+    <h2>Staff directory list templates</h2>
 
     <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
 
