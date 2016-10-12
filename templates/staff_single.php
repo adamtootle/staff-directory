@@ -16,11 +16,9 @@
 
                                 <p class="byline entry-meta vcard">
 
-                                  <?php printf( 'Posted %1$s %2$s',
+                                  <?php printf( 'Updated %1$s',
                                      /* the time the post was published */
-                                     '<time class="updated entry-time" datetime="' . get_the_time('Y-m-d') . '" itemprop="datePublished">' . get_the_time(get_option('date_format')) . '</time>',
-                                     /* the author of the post */
-                                     '<span class="by"> by </span> <span class="entry-author author" itemprop="author" itemscope itemptype="http://schema.org/Person">' . get_the_author_link( get_the_author_meta( 'ID' ) ) . '</span>'
+                                     '<time class="updated entry-time" datetime="' . get_the_time('Y-m-d') . '" itemprop="datePublished">' . get_the_time(get_option('date_format')) . '</time>'
                                   ); ?>
 
                                 </p>
@@ -34,14 +32,6 @@
 
                                 ?>
                               </section> <?php // end article section ?>
-
-                              <footer class="article-footer">
-
-                                <?php printf( 'filed under: %1$s', get_the_category_list(', ') ); ?>
-
-                                <?php the_tags( '<p class="tags"><span class="tags-title"> Tags: </span> ', ', ', '</p>' ); ?>
-
-                              </footer> <?php // end article footer ?>
 
                               <?php //comments_template(); ?>
 
