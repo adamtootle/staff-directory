@@ -9,14 +9,14 @@
   <div class="staff-template-textarea-wrapper">
     <label for="custom_staff_templates[<?php echo $template['index']; ?>][html]">HTML:</label>
     <p>
-      <textarea name="custom_staff_templates[<?php echo $template['index']; ?>][html]" class="large-text code"><?php echo stripslashes($template['html']); ?></textarea>
+      <textarea name="custom_staff_templates[<?php echo $template['index']; ?>][html]" class="large-text code"><?php echo html_entity_decode(stripslashes($template['html'])); ?></textarea>
     </p>
   </div>
 
   <div class="staff-template-textarea-wrapper">
     <label for="custom_staff_templates[<?php echo $template['index']; ?>][css]">CSS:</label>
     <p>
-      <textarea name="custom_staff_templates[<?php echo $template['index']; ?>][css]" class="large-text code"><?php echo stripslashes($template['css']); ?></textarea>
+      <textarea name="custom_staff_templates[<?php echo $template['index']; ?>][css]" class="large-text code"><?php echo html_entity_decode(stripslashes($template['css'])); ?></textarea>
     </p>
   </div>
 
