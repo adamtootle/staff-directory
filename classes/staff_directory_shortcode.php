@@ -234,8 +234,8 @@ class StaffDirectoryShortcode {
             $staff_settings = StaffSettings::sharedInstance();
             $output        = "";
             $template      = $staff_settings->getCustomStaffTemplateForSlug( $slug );
-            $template_html = stripslashes( $template['html'] );
-            $template_css  = stripslashes( $template['css'] );
+            $template_html = html_entity_decode(stripslashes( $template['html'] ));
+            $template_css  = html_entity_decode(stripslashes( $template['css'] ));
 
             $output .= "<style type='text/css'>$template_css</style>";
             $output .= do_shortcode($template_html);
