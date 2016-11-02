@@ -225,7 +225,7 @@ class StaffDirectoryShortcode {
             'list' => 'staff_list.php'
         );
 
-        $cur_template = $template_slugs[$slug];
+        $cur_template = isset($template_slugs[$slug]) ? $template_slugs[$slug] : false;
 
         if ($cur_template) {
             $template_contents = file_get_contents( STAFF_LIST_TEMPLATES . $cur_template);
