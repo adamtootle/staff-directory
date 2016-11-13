@@ -56,7 +56,7 @@ class Staff_Directory_Shortcode {
 					'taxonomy' => 'staff_category',
 					'terms'    => explode( ',', $cat ),
 					'field'    => 'slug',
-					'operator' => 'IN'
+					'operator' => 'AND'
 				)
 			);
 		}
