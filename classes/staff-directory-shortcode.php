@@ -56,7 +56,7 @@ class Staff_Directory_Shortcode {
 					'taxonomy' => 'staff_category',
 					'terms'    => explode( ',', $cat ),
 					'field'    => 'slug',
-					'operator' => 'AND'
+					'operator' => 'IN'
 				)
 			);
 		}
@@ -76,13 +76,13 @@ class Staff_Directory_Shortcode {
 		if ( $staff_query->have_posts() ) {
 			switch ( $template ) {
 				case 'list':
-					$output = StaffDirectoryShortcode::html_for_list_template( $staff_query );
+					$output = Staff_Directory_Shortcode::html_for_list_template( $staff_query );
 					break;
 				case 'grid':
-					$output = StaffDirectoryShortcode::html_for_grid_template( $staff_query );
+					$output = Staff_Directory_Shortcode::html_for_grid_template( $staff_query );
 					break;
 				default:
-					$output = StaffDirectoryShortcode::html_for_custom_template( $template, $staff_query );
+					$output = Staff_Directory_Shortcode::html_for_custom_template( $template, $staff_query );
 					break;
 			}
 		}
