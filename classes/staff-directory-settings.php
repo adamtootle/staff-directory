@@ -1,7 +1,7 @@
 <?php
 
-class StaffSettings {
-	public static function sharedInstance() {
+class Staff_Directory_Settings {
+	public static function shared_instance() {
 		static $shared_instance = null;
 		if ( $shared_instance === null ) {
 			$shared_instance = new static();
@@ -10,13 +10,13 @@ class StaffSettings {
 		return $shared_instance;
 	}
 
-	public static function setupDefaults() {
-		$staff_settings = StaffSettings::sharedInstance();
+	public static function setup_defaults() {
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 
-		$current_template_slug = $staff_settings->getCurrentDefaultStaffTemplate();
+		$current_template_slug = $staff_settings->get_current_default_staff_template();
 		if ( $current_template_slug == '' || $current_template_slug == null ) {
 
-			$staff_settings->updateDefaultStaffTemplateSlug( 'list' );
+			$staff_settings->update_default_staff_template_slug( 'list' );
 
 		} else if ( $current_template_slug == 'custom' || get_option( 'staff_directory_html_template', '' ) != '' ) {
 
@@ -25,8 +25,8 @@ class StaffSettings {
 				'html' => get_option( 'staff_directory_html_template' ),
 				'css'  => get_option( 'staff_directory_css_template' )
 			);
-			$staff_settings->updateCustomStaffTemplates( $templates_array );
-			$staff_settings->updateDefaultStaffTemplateSlug( 'custom_1' );
+			$staff_settings->update_custom_staff_templates( $templates_array );
+			$staff_settings->update_default_staff_template_slug( 'custom_1' );
 
 			delete_option( 'staff_directory_html_template' );
 			delete_option( 'staff_directory_css_template' );
@@ -38,11 +38,11 @@ class StaffSettings {
 	# setters
 	#
 
-	public function updateDefaultStaffTemplateSlug( $slug = 'list' ) {
+	public function update_default_staff_template_slug( $slug = 'list' ) {
 		update_option( 'staff_directory_template_slug', $slug );
 	}
 
-	public function updateCustomStaffTemplates( $templates = array() ) {
+	public function update_custom_staff_templates( $templates = array() ) {
 		$updated_templates_array = array();
 		$index                   = 1;
 		foreach ( $templates as $template ) {
@@ -58,7 +58,7 @@ class StaffSettings {
 		update_option( 'staff_directory_custom_templates', $updated_templates_array );
 	}
 
-	public function updateCustomStaffMetaFields( $labels = array(), $types = array() ) {
+	public function update_custom_staff_meta_fields( $labels = array(), $types = array() ) {
 		$index             = 0;
 		$meta_fields_array = array();
 		foreach ( $labels as $meta_label ) {
@@ -80,7 +80,7 @@ class StaffSettings {
 	# getters
 	#
 
-	public function getCurrentDefaultStaffTemplate() {
+	public function get_current_default_staff_template() {
 		$current_template = get_option( 'staff_directory_template_slug' );
 
 		if ( $current_template == '' && get_option( 'staff_directory_html_template' ) != '' ) {
@@ -94,12 +94,12 @@ class StaffSettings {
 		return $current_template;
 	}
 
-	public function getCustomStaffTemplates() {
+	public function get_custom_staff_templates() {
 		return get_option( 'staff_directory_custom_templates', array() );
 	}
 
-	public function getCustomStaffTemplateForSlug( $slug = '' ) {
-		$templates = $this->getCustomStaffTemplates();
+	public function get_custom_staff_template_for_slug( $slug = '' ) {
+		$templates = $this->get_custom_staff_templates();
 		foreach ( $templates as $template ) {
 			if ( $template['slug'] == $slug ) {
 				return $template;
@@ -107,7 +107,7 @@ class StaffSettings {
 		}
 	}
 
-	public function getStaffDetailsFields() {
+	public function get_staff_details_fields() {
 		return get_option( 'staff_meta_fields', array() );
 	}
 
@@ -115,16 +115,16 @@ class StaffSettings {
 	# delete functions
 	#
 
-	public function deleteCustomTemplate( $index = null ) {
+	public function delete_custom_template( $index = null ) {
 		if ( $index != null ) {
-			$custom_templates = $this->getCustomStaffTemplates();
+			$custom_templates = $this->get_custom_staff_templates();
 			$new_custom_templates == array();
 			foreach ( $custom_templates as $template ) {
 				if ( $template['index'] != $index ) {
 					$new_custom_templates[] = $template;
 				}
 			}
-			$this->updateCustomStaffTemplates( $new_custom_templates );
+			$this->update_custom_staff_templates( $new_custom_templates );
 		}
 	}
 }

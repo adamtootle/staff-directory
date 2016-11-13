@@ -69,6 +69,10 @@
     <li><code>[bio_paragraph]</code> - the staff member's bio with &lt;p&gt; tags</li>
     <li><code>[category]</code> - the staff member's category (first category only)</li>
     <li><code>[category all=true]</code> - all of the staff member's categories in a comma-separated list</li>
+
+    <li><code>[email_link]</code> (deprecated, requires an Email field above)</li>
+    <li><code>[website_link]</code> (deprecated, requires a Website field above)</li>
+
     <li><code>[profile_link]</code> - wrapper or standalone - creates a link to the staff member's profile
         <ul style="text-indent:25px;">
             <li>Used as a wrapper: <code>[profile_link target="_self"] Some Content [/profile_link]</code></li>
@@ -76,6 +80,7 @@
             <li>Notice the 'inner_text' and 'target' attributes. 'inner_text' is only available for standalone profile_link tags, while target is available for either.</li>
         </ul>
     </li>
+    
   </ul>
 </div>
 

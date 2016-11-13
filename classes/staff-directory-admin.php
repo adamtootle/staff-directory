@@ -1,26 +1,26 @@
 <?php
 
-class StaffDirectoryAdmin {
+class Staff_Directory_Admin {
 	static function register_admin_menu_items() {
-		add_action( 'admin_menu', array( 'StaffDirectoryAdmin', 'add_admin_menu_items' ) );
+		add_action( 'admin_menu', array( 'Staff_Directory_Admin', 'add_admin_menu_items' ) );
 	}
 
 	static function add_admin_menu_items() {
 		add_submenu_page( 'edit.php?post_type=staff', 'Staff Directory Settings', 'Settings', 'publish_posts',
-			'staff-directory-settings', array( 'StaffDirectoryAdmin', 'settings' ) );
+			'staff-directory-settings', array( 'Staff_Directory_Admin', 'settings' ) );
 		add_submenu_page( 'edit.php?post_type=staff', 'Staff Directory Help', 'Help', 'publish_posts',
-			'staff-directory-help', array( 'StaffDirectoryAdmin', 'help' ) );
+			'staff-directory-help', array( 'Staff_Directory_Admin', 'help' ) );
 		add_submenu_page( 'edit.php?post_type=staff', 'Staff Directory Import', 'Import Old Staff', 'publish_posts',
-			'staff-directory-import', array( 'StaffDirectoryAdmin', 'import' ) );
+			'staff-directory-import', array( 'Staff_Directory_Admin', 'import' ) );
 	}
 
 	static function settings() {
 
-		$staff_settings = StaffSettings::sharedInstance();
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 		$did_update_options = false;
 
 		if ( isset( $_GET['delete-template'] ) ) {
-			$staff_settings->deleteCustomTemplate( $_GET['delete-template'] );
+			$staff_settings->delete_custom_template( $_GET['delete-template'] );
 		}
 
 		if ( isset( $_POST['staff_single_template'] ) ) {
@@ -34,38 +34,38 @@ class StaffDirectoryAdmin {
         }
 
 		if ( isset( $_POST['staff_templates']['slug'] ) ) {
-			$staff_settings->updateDefaultStaffTemplateSlug( $_POST['staff_templates']['slug'] );
+			$staff_settings->update_default_staff_template_slug( $_POST['staff_templates']['slug'] );
 			$did_update_options = true;
 		}
 
 		if ( isset( $_POST['custom_staff_templates'] ) ) {
-			$staff_settings->updateCustomStaffTemplates( $_POST['custom_staff_templates'] );
+			$staff_settings->update_custom_staff_templates( $_POST['custom_staff_templates'] );
 			$did_update_options = true;
 		}
 
 		if ( isset( $_POST['staff_meta_fields_labels'] ) ) {
-			$staff_settings->updateCustomStaffMetaFields( $_POST['staff_meta_fields_labels'],
+			$staff_settings->update_custom_staff_meta_fields( $_POST['staff_meta_fields_labels'],
 				$_POST['staff_meta_fields_types'] );
 			$did_update_options = true;
 		}
 
-		$current_template = $staff_settings->getCurrentDefaultStaffTemplate();
-		$custom_templates = $staff_settings->getCustomStaffTemplates();
+		$current_template = $staff_settings->get_current_default_staff_template();
+		$custom_templates = $staff_settings->get_custom_staff_templates();
 
-		require_once( plugin_dir_path( __FILE__ ) . '../views/admin_settings.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../views/admin-settings.php' );
 	}
 
 	static function help() {
-		require_once( plugin_dir_path( __FILE__ ) . '../views/admin_help.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../views/admin-help.php' );
 	}
 
 	static function import() {
 		$did_import_old_staff = false;
 		if ( isset( $_GET['import'] ) && $_GET['import'] == 'true' ) {
-			StaffDirectory::import_old_staff();
+			Staff_Directory::import_old_staff();
 			$did_import_old_staff = true;
 		}
-		if ( StaffDirectory::has_old_staff_table() ):
+		if ( Staff_Directory::has_old_staff_table() ):
 			?>
 
 			<h2>Staff Directory Import</h2>
@@ -114,7 +114,7 @@ class StaffDirectoryAdmin {
 	}
 
 	static function register_import_old_staff_message() {
-		add_action( 'admin_notices', array( 'StaffDirectoryAdmin', 'show_import_old_staff_message' ) );
+		add_action( 'admin_notices', array( 'Staff_Directory_Admin', 'show_import_old_staff_message' ) );
 	}
 
 	static function show_import_old_staff_message() {

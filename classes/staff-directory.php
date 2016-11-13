@@ -1,37 +1,38 @@
 <?php
 
-class StaffDirectory {
+class Staff_Directory {
 
 	#
 	# Init custom post types
 	#
 
 	static function register_post_types() {
-		add_action( 'init', array( 'StaffDirectory', 'create_post_types' ) );
-		add_action( 'init', array( 'StaffDirectory', 'create_staff_taxonomies' ) );
-		add_filter( "manage_edit-staff_columns", array( 'StaffDirectory', 'set_staff_admin_columns' ) );
+		add_action( 'init', array( 'Staff_Directory', 'create_post_types' ) );
+		add_action( 'init', array( 'Staff_Directory', 'create_staff_taxonomies' ) );
+		add_filter( "manage_edit-staff_columns", array( 'Staff_Directory', 'set_staff_admin_columns' ) );
 		add_filter( "manage_staff_posts_custom_column", array(
-			'StaffDirectory',
+			'Staff_Directory',
 			'custom_staff_admin_columns'
 		), 10, 3 );
-		add_filter( "manage_edit-staff_category_columns", array( 'StaffDirectory', 'set_staff_category_columns' ) );
+		add_filter( "manage_edit-staff_category_columns", array( 'Staff_Directory', 'set_staff_category_columns' ) );
 		add_filter( "manage_staff_category_custom_column", array(
-			'StaffDirectory',
+			'Staff_Directory',
 			'custom_staff_category_columns'
 		), 10, 3 );
-		add_filter( 'enter_title_here', array( 'StaffDirectory', 'staff_title_text' ) );
-		add_filter( 'admin_head', array( 'StaffDirectory', 'remove_media_buttons' ) );
-		add_action( 'add_meta_boxes_staff', array( 'StaffDirectory', 'add_staff_custom_meta_boxes' ) );
-		add_action( 'save_post', array( 'StaffDirectory', 'save_meta_boxes' ) );
-		add_action( 'wp_enqueue_scripts', array( 'StaffDirectory', 'enqueue_fontawesome' ) );
-		add_action( 'admin_enqueue_scripts', array( 'StaffDirectory', 'enqueue_fontawesome' ) );
 
-		add_action( 'init', array( 'StaffDirectory', 'init_tinymce_button' ) );
-		add_action( 'wp_ajax_get_my_form', array( 'StaffDirectory', 'thickbox_ajax_form' ) );
-		add_action( 'pre_get_posts', array( 'StaffDirectory', 'manage_listing_query' ) );
+		add_filter( 'enter_title_here', array( 'Staff_Directory', 'staff_title_text' ) );
+		add_filter( 'admin_head', array( 'Staff_Directory', 'remove_media_buttons' ) );
+		add_action( 'add_meta_boxes_staff', array( 'Staff_Directory', 'add_staff_custom_meta_boxes' ) );
+		add_action( 'save_post', array( 'Staff_Directory', 'save_meta_boxes' ) );
+		add_action( 'wp_enqueue_scripts', array( 'Staff_Directory', 'enqueue_fontawesome' ) );
+		add_action( 'admin_enqueue_scripts', array( 'Staff_Directory', 'enqueue_fontawesome' ) );
+
+		add_action( 'init', array( 'Staff_Directory', 'init_tinymce_button' ) );
+		add_action( 'wp_ajax_get_my_form', array( 'Staff_Directory', 'thickbox_ajax_form' ) );
+		add_action( 'pre_get_posts', array( 'Staff_Directory', 'manage_listing_query' ) );
 
         //load single-page/profile template
-        add_filter('single_template', array( 'StaffDirectory', 'load_profile_template' ) );
+        add_filter('single_template', array( 'Staff_Directory', 'load_profile_template' ) );
 	}
 
 	static function create_post_types() {
@@ -182,7 +183,7 @@ class StaffDirectory {
 
 	static function add_staff_custom_meta_boxes() {
 		add_meta_box( 'staff-meta-box', __( 'Staff Details' ), array(
-			'StaffDirectory',
+			'Staff_Directory',
 			'staff_meta_box_output'
 		), 'staff', 'normal', 'high' );
 	}
@@ -191,7 +192,7 @@ class StaffDirectory {
 
 		wp_nonce_field( 'staff_meta_box_nonce_action', 'staff_meta_box_nonce' );
 
-		$staff_settings = StaffSettings::sharedInstance();
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 
 		?>
 
@@ -203,7 +204,7 @@ class StaffDirectory {
 			}
 		</style>
 
-		<?php foreach ( $staff_settings->getStaffDetailsFields() as $field ): ?>
+		<?php foreach ( $staff_settings->get_staff_details_fields() as $field ): ?>
 			<p>
 				<label for="staff[<?php echo $field['slug'] ?>]" class="staff-label"><?php _e( $field['name'] ); ?>
 					:</label>
@@ -280,7 +281,7 @@ class StaffDirectory {
 			update_option( 'staff_directory_template_slug', 'list' );
 		}
 
-		$has_custom_templates = count(StaffSettings::sharedInstance()->getCustomStaffTemplates()) > 0;
+		$has_custom_templates = count(Staff_Directory_Settings::shared_instance()->get_custom_staff_templates()) > 0;
 
 		if ( get_option( 'staff_directory_html_template' ) == '' && !$has_custom_templates ) {
 			$default_html_template = <<<EOT
@@ -339,7 +340,7 @@ EOT;
 			return false;
 		}
 
-		return StaffDirectory::has_old_staff_table();
+		return Staff_Directory::has_old_staff_table();
 	}
 
 	static function get_old_staff( $orderby = null, $order = null, $filter = null ) {
@@ -432,7 +433,7 @@ EOT;
 		# Now copy old staff members over
 		#
 
-		$old_staff = StaffDirectory::get_old_staff();
+		$old_staff = Staff_Directory::get_old_staff();
 		foreach ( $old_staff as $staff ) {
 			$new_staff_array   = array(
 				'post_title'   => $staff->name,
@@ -522,8 +523,8 @@ EOT;
 			return;
 		}
 
-		add_filter( "mce_external_plugins", array( 'StaffDirectory', 'register_tinymce_plugin' ) );
-		add_filter( 'mce_buttons', array( 'StaffDirectory', 'add_tinymce_button' ) );
+		add_filter( "mce_external_plugins", array( 'Staff_Directory', 'register_tinymce_plugin' ) );
+		add_filter( 'mce_buttons', array( 'Staff_Directory', 'add_tinymce_button' ) );
 	}
 
 	static function register_tinymce_plugin( $plugin_array ) {
@@ -539,7 +540,7 @@ EOT;
 	}
 
 	static function thickbox_ajax_form() {
-		require_once( plugin_dir_path( __FILE__ ) . '/../views/shortcode_thickbox.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/../views/shortcode-thickbox.php' );
 		exit;
 	}
 

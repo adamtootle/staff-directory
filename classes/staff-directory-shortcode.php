@@ -1,15 +1,16 @@
 <?php
 
-class StaffDirectoryShortcode {
+class Staff_Directory_Shortcode {
 
     public static $staff_query;
 
 	static function register_shortcode() {
+
         //Main shortcode to initiate plugin
-		add_shortcode( 'staff-directory', array( 'StaffDirectoryShortcode', 'shortcode' ) );
+        add_shortcode( 'staff-directory', array( 'Staff_Directory_Shortcode', 'shortcode' ) );
 
         //Shortcode to initiate the loop
-        add_shortcode( 'staff_loop', array( 'StaffDirectoryShortcode', 'staff_loop_shortcode' ) );
+        add_shortcode( 'staff_loop', array( 'Staff_Directory_Shortcode', 'staff_loop_shortcode' ) );
 
         //List of predefined shortcode tags
         $predefined_shortcodes = array(
@@ -24,9 +25,9 @@ class StaffDirectoryShortcode {
         );
 
         //Add shortcodes for all $predefined_shortcodes, link to function by
-        //the name of $code_shortcode
+        //the name of {$code}_shortcode
         foreach($predefined_shortcodes as $code){
-            add_shortcode( $code, array( 'StaffDirectoryShortcode', $code . '_shortcode' ) );
+            add_shortcode( $code, array( 'Staff_Directory_Shortcode', $code . '_shortcode' ) );
         }
 
         //Retrieve custom fields
@@ -35,7 +36,7 @@ class StaffDirectoryShortcode {
         if ( !empty($staff_meta_fields) ) {
             foreach ( $staff_meta_fields as $field ) {
                 $meta_key = $field['slug'];
-                add_shortcode( $meta_key, array( 'StaffDirectoryShortcode', 'meta_shortcode' ) );
+                add_shortcode( $meta_key, array( 'Staff_Directory_Shortcode', 'meta_shortcode' ) );
             }
         }
 	}
@@ -55,7 +56,7 @@ class StaffDirectoryShortcode {
 
     static function staff_loop_shortcode( $atts, $content = NULL ) {
 
-        $query = StaffDirectoryShortcode::$staff_query;
+        $query = Staff_Directory_Shortcode::$staff_query;
         $output = "";
 
         if ( $query->have_posts() ) {
@@ -133,7 +134,7 @@ class StaffDirectoryShortcode {
             $staff_category = "";
         }
 
-        if( $atts['all'] === true ) {
+        if( $atts['all'] === "true" || $atts['all'] === true ) {
             return $all_staff_categories;
         } else {
             return $staff_category;
@@ -152,17 +153,17 @@ class StaffDirectoryShortcode {
 
 		$output = '';
 
-		$staff_settings = StaffSettings::sharedInstance();
+		$staff_settings = Staff_Directory_Settings::shared_instance();
 		if ( isset( $params['template'] ) ) {
 			$template = $params['template'];
 		} else {
-			$template = $staff_settings->getCurrentDefaultStaffTemplate();
+			$template = $staff_settings->get_current_default_staff_template();
 		}
 
 		// get all staff
 		$param = "id=$id&cat=$cat&orderby=$orderby&order=$order&meta_key=$meta_key";
 
-		return StaffDirectoryShortcode::show_staff_directory( $param, $template );
+		return Staff_Directory_Shortcode::show_staff_directory( $param, $template );
 	}
 
     /*** End shortcode functions ***/
@@ -192,7 +193,9 @@ class StaffDirectoryShortcode {
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'staff_category',
-					'terms'    => array( $cat )
+					'terms'    => explode( ',', $cat ),
+					'field'    => 'slug',
+					'operator' => 'AND'
 				)
 			);
 		}
@@ -208,9 +211,13 @@ class StaffDirectoryShortcode {
 		}
 
         //Store in class scope so we can access query from staff_loop shortcode
-		StaffDirectoryShortcode::$staff_query = new WP_Query( $query_args );
+		Staff_Directory_Shortcode::$staff_query = new WP_Query( $query_args );
 
-		$output = self::retrieve_template_html($template);
+        $output = '';
+
+        if ( Staff_Directory_Shortcode::$staff_query->have_posts() ) {
+		    $output = self::retrieve_template_html($template);
+        }
 
         wp_reset_query();
 
@@ -231,9 +238,9 @@ class StaffDirectoryShortcode {
             $template_contents = file_get_contents( STAFF_LIST_TEMPLATES . $cur_template);
             return do_shortcode($template_contents);
         } else {
-            $staff_settings = StaffSettings::sharedInstance();
+            $staff_settings = Staff_Directory_Settings::shared_instance();
             $output        = "";
-            $template      = $staff_settings->getCustomStaffTemplateForSlug( $slug );
+            $template      = $staff_settings->get_custom_staff_template_for_slug( $slug );
             $template_html = html_entity_decode(stripslashes( $template['html'] ));
             $template_css  = html_entity_decode(stripslashes( $template['css'] ));
 

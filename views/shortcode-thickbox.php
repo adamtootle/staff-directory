@@ -1,6 +1,6 @@
 <?php
 
-  $staff_settings = StaffSettings::sharedInstance();
+  $staff_settings = Staff_Directory_Settings::shared_instance();
 
 ?>
 
@@ -37,7 +37,7 @@
     <option value=''>-- Use Default --</option>
     <option value='list'>List</option>
     <option value='grid'>Grid</option>
-    <?php foreach($staff_settings->getCustomStaffTemplates() as $template): ?>
+    <?php foreach($staff_settings->get_custom_staff_templates() as $template): ?>
       <option value="<?php echo $template['slug'] ?>">Custom Template <?php echo $template['index']; ?></option>
     <?php endforeach; ?>
   </select>
