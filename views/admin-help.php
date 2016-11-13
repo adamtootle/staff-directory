@@ -24,7 +24,8 @@
 </div>
 
 <div class="help-topic" id="staff-templates">
-    <h2>Staff Directory Single Profile Templates</h2>
+    <h2>Staff Directory Single Profile Template</h2>
+    <aside>Note: The difference between the Single Profile Template and the Listing Templates - Listing Templates are used to display the list of staff members, while the Single Profile Template is the file used to format the single profile page (i.e. the page you see after clicking on a staff member).</aside>
     <p>
         By default, Staff Directory uses the staff_single.php file, located in the plugin's templates folder, to display individual profile data. But you may create your own templates if you wish.
     </p>
@@ -37,7 +38,7 @@
 </div>
 
 <div class="help-topic" id="staff-templates">
-  <h2>Staff Directory Templates</h2>
+  <h2>Staff Directory Listing Templates</h2>
 
   <p>
     The the <code>[staff-directory]</code> shortcode supports a default template (set in <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-settings">Staff Settings</a>) or custom templates per use.
@@ -80,7 +81,7 @@
             <li>Notice the 'inner_text' and 'target' attributes. 'inner_text' is only available for standalone profile_link tags, while target is available for either.</li>
         </ul>
     </li>
-    
+
   </ul>
 </div>
 
