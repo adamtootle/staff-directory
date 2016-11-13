@@ -54,7 +54,9 @@ class Staff_Directory_Shortcode {
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'staff_category',
-					'terms'    => array( $cat )
+					'terms'    => explode( ',', $cat ),
+					'field'    => 'slug',
+					'operator' => 'AND'
 				)
 			);
 		}
@@ -71,17 +73,21 @@ class Staff_Directory_Shortcode {
 
 		$staff_query = new WP_Query( $query_args );
 
-		switch ( $template ) {
-			case 'list':
-				$output = Staff_Directory_Shortcode::html_for_list_template( $staff_query );
-				break;
-			case 'grid':
-				$output = Staff_Directory_Shortcode::html_for_grid_template( $staff_query );
-				break;
-			default:
-				$output = Staff_Directory_Shortcode::html_for_custom_template( $template, $staff_query );
-				break;
-
+		if ( $staff_query->have_posts() ) {
+			switch ( $template ) {
+				case 'list':
+					$output = StaffDirectoryShortcode::html_for_list_template( $staff_query );
+					break;
+				case 'grid':
+					$output = StaffDirectoryShortcode::html_for_grid_template( $staff_query );
+					break;
+				default:
+					$output = StaffDirectoryShortcode::html_for_custom_template( $template, $staff_query );
+					break;
+			}
+		}
+		else {
+			$output = '';
 		}
 
 		wp_reset_query();
