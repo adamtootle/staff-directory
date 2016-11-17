@@ -34,6 +34,8 @@ Special thanks to those who have helped out at the Github repo:
 [0aveRyan](https://github.com/0aveRyan)
 [ethanclevenger91](https://github.com/ethanclevenger91)
 [timnolte](https://github.com/timnolte)
+[delitestudio](https://github.com/delitestudio)
+[TurqDevDesign](https://github.com/TurqDevDesign)
 
 == Installation ==
 
