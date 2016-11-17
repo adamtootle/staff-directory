@@ -164,7 +164,7 @@
                 //According to https://codex.wordpress.org/Function_Reference/get_template_directory ,
                 //get_template_directory() will point to parent template directory of child themes.
                 $template_path      = get_template_directory();
-                $staff_single_files = glob($template_path . "/staff_single_*.php");
+                $staff_single_files = glob($template_path . "/single-staff-*.php");
             ?>
             <option value="default" <?php selected( $val, 'default'); ?>>Default</option>
             <?php

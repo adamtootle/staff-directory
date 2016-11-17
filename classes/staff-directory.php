@@ -79,7 +79,7 @@ class Staff_Directory {
 
     static function load_profile_template($original){
         global $post;
-        $default_file_name = 'staff_single.php';
+        $default_file_name = 'single-staff.php';
         if(is_singular('staff')){
             $single_template_option = get_option('staff_single_template');
             if(strtolower($single_template_option) == 'default'){

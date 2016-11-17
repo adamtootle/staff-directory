@@ -27,13 +27,13 @@
     <h2>Staff Directory Single Profile Template</h2>
     <aside>Note: The difference between the Single Profile Template and the Listing Templates - Listing Templates are used to display the list of staff members, while the Single Profile Template is the file used to format the single profile page (i.e. the page you see after clicking on a staff member).</aside>
     <p>
-        By default, Staff Directory uses the staff_single.php file, located in the plugin's templates folder, to display individual profile data. But you may create your own templates if you wish.
+        By default, Staff Directory uses the single-staff.php file, located in the plugin's templates folder, to display individual profile data. But you may create your own templates if you wish.
     </p>
     <p>
-        Warning: Do not edit the staff_single.php file directly. If you do, your changes will be overwritten when Staff Directory updates.
+        Warning: Do not edit the single-staff.php file directly. If you do, your changes will be overwritten when Staff Directory updates.
     </p>
     <p>
-        To create a custom profile template, the easiest way would be to either copy your single.php file, or to copy the staff_single.php file. Once copied, place the file in your theme's template directory (for most themes this is simply your themes main folder), and then give the file any name you choose, making sure to prefix the name with 'staff_single_' ( i.e. staff_single_myCustomTemplate.php ). If you do not use the prefix 'staff_single_', Staff Directory will not recognize your template.
+        To create a custom profile template, the easiest way would be to either copy your single.php file, or to copy the single-staff.php file. Once copied, place the file in your theme's template directory (for most themes this is simply your themes main folder), and then give the file any name you choose, making sure to prefix the name with 'single-staff-' ( i.e. single-staff-myCustomTemplate.php ). If you do not use the prefix 'single-staff-', Staff Directory will not recognize your template.
     </p>
 </div>
 
