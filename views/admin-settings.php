@@ -160,10 +160,7 @@
             <?php
                 $val = strtolower(get_option( 'staff_single_template' ));
 
-                //May cause issues for child themes in the future, requires testing.
-                //According to https://codex.wordpress.org/Function_Reference/get_template_directory ,
-                //get_template_directory() will point to parent template directory of child themes.
-                $template_path      = get_template_directory();
+                $template_path      = get_stylesheet_directory();
                 $staff_single_files = glob($template_path . "/single-staff-*.php");
             ?>
             <option value="default" <?php selected( $val, 'default'); ?>>Default</option>
