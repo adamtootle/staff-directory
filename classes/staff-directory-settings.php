@@ -47,6 +47,8 @@ class Staff_Directory_Settings {
 		$index                   = 1;
 		foreach ( $templates as $template ) {
 			if ( $template['html'] != '' || $template['css'] != '' ) {
+                $template['html']          = htmlentities($template['html'], ENT_QUOTES);
+                $template['css']           = htmlentities($template['css'], ENT_QUOTES);
 				$template['index']         = $index;
 				$template['slug']          = 'custom_' . $index;
 				$updated_templates_array[] = $template;

@@ -148,28 +148,50 @@
   </div>
 
   <div class="form-group">
-    <h2>Templates</h2>
 
     <p>Template instructions can be found on the <a href="<?php echo get_admin_url(); ?>edit.php?post_type=staff&page=staff-directory-help#staff-template-tags">Staff Help page</a></p>
+
+    <h2>Single profile templates</h2>
+
+    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'staff_single_'.</p>
+
+    <p>
+        <select name="staff_single_template">
+            <?php
+                $val = strtolower(get_option( 'staff_single_template' ));
+
+                $template_path      = get_stylesheet_directory();
+                $staff_single_files = glob($template_path . "/single-staff-*.php");
+            ?>
+            <option value="default" <?php selected( $val, 'default'); ?>>Default</option>
+            <?php
+                $output = "";
+                foreach($staff_single_files as $choice) {
+                    if(substr($choice, 0, strlen($template_path . "/")) == $template_path . "/") {
+                        $choice = substr($choice, strlen($template_path . "/"));
+                    }
+                    $value   = ' value="' . strtolower($choice) . '" ';
+                    $output .= '<option' . $value . selected( $val, $choice) . '>' . $choice . '</option>';
+                }
+                echo $output;
+            ?>
+        </select>
+    </p>
+
+    <h2>Staff directory list templates</h2>
 
     <p>Templates can be chosen manually with the [staff-directory] shortcode (slugs shown in parentheses), or you can choose to set a default template here:</p>
 
     <p>
-      <?php if($current_template == 'list'): ?>
-        <input type="radio" name="staff_templates[slug]" value="list" checked />
-      <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="list" />
-      <?php endif; ?>
-      List (list)
+        <input type="radio" name="staff_templates[slug]" value="list"
+        <?php checked( $current_template, 'list', true ); ?> />
+        List (list)
     </p>
 
     <p>
-      <?php if($current_template == 'grid'): ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" checked />
-      <?php else: ?>
-        <input type="radio" name="staff_templates[slug]" value="grid" />
-      <?php endif; ?>
-      Grid (grid)
+        <input type="radio" name="staff_templates[slug]" value="grid"
+        <?php checked( $current_template, 'grid', true ); ?> />
+        Grid (grid)
     </p>
 
     <?php foreach($custom_templates as $template): ?>

@@ -19,6 +19,7 @@ class Staff_Directory {
 			'Staff_Directory',
 			'custom_staff_category_columns'
 		), 10, 3 );
+
 		add_filter( 'enter_title_here', array( 'Staff_Directory', 'staff_title_text' ) );
 		add_filter( 'admin_head', array( 'Staff_Directory', 'remove_media_buttons' ) );
 		add_action( 'add_meta_boxes_staff', array( 'Staff_Directory', 'add_staff_custom_meta_boxes' ) );
@@ -29,6 +30,9 @@ class Staff_Directory {
 		add_action( 'init', array( 'Staff_Directory', 'init_tinymce_button' ) );
 		add_action( 'wp_ajax_get_my_form', array( 'Staff_Directory', 'thickbox_ajax_form' ) );
 		add_action( 'pre_get_posts', array( 'Staff_Directory', 'manage_listing_query' ) );
+
+        //load single-page/profile template
+        add_filter('single_template', array( 'Staff_Directory', 'load_profile_template' ) );
 	}
 
 	static function create_post_types() {
@@ -72,6 +76,28 @@ class Staff_Directory {
 			),
 		) );
 	}
+
+    static function load_profile_template($original){
+        global $post;
+        $default_file_name = 'single-staff.php';
+        if(is_singular('staff')){
+            $single_template_option = get_option('staff_single_template');
+            if(strtolower($single_template_option) == 'default'){
+                return STAFF_LIST_TEMPLATES . $default_file_name;
+            } else {
+                $template = locate_template($single_template_option);
+                if ($template && !empty($template)){
+                    return $template;
+                }
+            }
+        }
+        //Option not set to default, and template not found, try to load
+        //default anyway. This will ensure that if, somehow, the user
+        //doesn't visit the settings page in order to instantiate the defaults,
+        //we'll still be using a template specified for staff-directory, not the
+        //default single.php
+        return STAFF_LIST_TEMPLATES . $default_file_name;
+    }
 
 	static function set_staff_admin_columns() {
 		$new_columns = array(

@@ -14,6 +14,7 @@ $staff_directory_table = $wpdb->prefix . 'staff_directory';
 define( 'STAFF_DIRECTORY_TABLE', $wpdb->prefix . 'staff_directory' );
 define( 'STAFF_TEMPLATES', $wpdb->prefix . 'staff_directory_templates' );
 define( 'STAFF_PHOTOS_DIRECTORY', WP_CONTENT_DIR . "/uploads/staff-photos/" );
+define( 'STAFF_LIST_TEMPLATES', plugin_dir_path(__FILE__) . "templates/" );
 
 require_once( dirname( __FILE__ ) . '/classes/staff-directory-settings.php' );
 
