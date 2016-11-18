@@ -2,8 +2,8 @@
 Contributors: adamtootle
 Tags: staff directory, staff, employees, team members, faculty
 Requires at least: 2.3.0
-Tested up to: 4.6
-Stable Tag: tags/1.0.3
+Tested up to: 4.6.1
+Stable Tag: tags/1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,13 @@ Staff categories are now managed using the internal WordPress category managemen
 4. Set custom staff details and create custom templates
 
 == Changelog ==
+
+= 1.1.0 =
+
+<ul>
+<li>Adds support for single staff member pages.</li>
+<li>Adds the ability to target staff in multiple categories using category slugs.</li>
+</ul>
 
 = 1.0.3 =
 <ul>
