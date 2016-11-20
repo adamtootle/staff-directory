@@ -190,14 +190,23 @@ class Staff_Directory_Shortcode {
 
 		// check if we're returning a staff category
 		if ( ( isset( $cat ) && $cat != '' ) && ( ! isset( $id ) || $id == '' ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'staff_category',
-					'terms'    => explode( ',', $cat ),
-					'field'    => 'slug',
-					'operator' => 'AND'
-				)
-			);
+            if (is_numeric($cat)) {
+                $query_args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'staff_category',
+                        'terms'    => $cat
+                    )
+                );
+            } else {
+                $query_args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'staff_category',
+                        'terms'    => explode( ',', $cat ),
+                        'field'    => 'slug',
+                        'operator' => 'AND'
+                    )
+                );
+            }
 		}
 
 		if ( isset( $orderby ) && $orderby != '' ) {
