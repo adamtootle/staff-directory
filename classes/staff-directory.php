@@ -80,24 +80,20 @@ class Staff_Directory {
     static function load_profile_template($original){
         global $post;
 
-        if ($post->post_type == 'staff') {
-        	$default_file_name = 'single-staff.php';
-	        if(is_singular('staff')){
-	            $single_template_option = get_option('staff_single_template');
-	            if(strtolower($single_template_option) == 'default'){
-	                return STAFF_LIST_TEMPLATES . $default_file_name;
-	            } else {
-	                $template = locate_template($single_template_option);
-	                if ($template && !empty($template)){
-	                    return $template;
-	                }
-	            }
-	        }
+        if (is_singular('staff')) {
+	        $single_template_option = get_option('staff_single_template');
+          if(strtolower($single_template_option) != 'default'){
+          	$template = locate_template($single_template_option);
+            if ($template && !empty($template)){
+                return $template;
+            }
+          }
 	        //Option not set to default, and template not found, try to load
 	        //default anyway. This will ensure that if, somehow, the user
 	        //doesn't visit the settings page in order to instantiate the defaults,
 	        //we'll still be using a template specified for staff-directory, not the
 	        //default single.php
+	        $default_file_name = 'single-staff.php';
 	        return STAFF_LIST_TEMPLATES . $default_file_name;
         }
 
