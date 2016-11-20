@@ -14,10 +14,13 @@
   <p>
     The following parameters are accepted:
     <ul>
-      <li><code>cat</code> - the staff category ID to use. (Ex: [staff-directory cat=1])</li>
       <li><code>id</code> - the ID for a single staff member. (Ex: [staff-directory id=4])</li>
+      <li><code>cat</code> - possibly category IDs or slugs. (Ex: [staff-directory cat=1,4] or [staff-directory cat="administration"])</li>
+      <li><code>cat_field</code> - used with cat. (Ex: [staff-directory cat="administration" cat_field="slug"])</li>
+      <li><code>cat_relation</code> - used with cat and cat_field. Possible values are "OR" and "AND". (Ex: [staff-directory cat="administration,corporate" cat_relation="OR"])</li>
       <li><code>orderby</code> - the attribute to use for ordering. Supported values are 'name' and 'ID'. (Ex: [staff-directory orderby=name])</li>
       <li><code>order</code> - the order in which to arrange the staff members. Supported values are 'asc' and 'desc'. (Ex: [staff-directory orbder=asc])</li>
+      <li><code>template</code> - the slug for the staff template to use. (Ex: [staff-directory template=custom_1])</li>
     </ul>
     Note - Ordering options can be viewed here - <a href="https://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters">https://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters</a>
   </p>

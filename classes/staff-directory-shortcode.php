@@ -143,37 +143,32 @@ class Staff_Directory_Shortcode {
     }
 
 	static function shortcode( $params ) {
-		extract( shortcode_atts( array(
-			'id'       => '',
-			'cat'      => '',
-			'orderby'  => '',
-			'order'    => '',
-			'meta_key' => ''
-		), $params ) );
 
-		$output = '';
+        $staff_settings = Staff_Directory_Settings::shared_instance();
 
-		$staff_settings = Staff_Directory_Settings::shared_instance();
-		if ( isset( $params['template'] ) ) {
-			$template = $params['template'];
-		} else {
-			$template = $staff_settings->get_current_default_staff_template();
-		}
+        $default_params = array(
+            'id'       => '',
+            'cat'      => '',
+            'cat_field' => 'ID',
+            'cat_relation' => 'OR',
+            'orderby'  => 'ID',
+            'order'    => 'DESC',
+            'meta_key' => '',
+            'template' => $staff_settings->get_current_default_staff_template()
+        );
 
-		// get all staff
-		$param = "id=$id&cat=$cat&orderby=$orderby&order=$order&meta_key=$meta_key";
+		$params = shortcode_atts( $default_params, $params );
 
-		return Staff_Directory_Shortcode::show_staff_directory( $param, $template );
+		return Staff_Directory_Shortcode::show_staff_directory( $params );
 	}
 
     /*** End shortcode functions ***/
 
-	static function show_staff_directory( $param = null, $template = null ) {
-		parse_str( $param );
+	static function show_staff_directory( $params = null ) {
 		global $wpdb;
 
 		// make sure we aren't calling both id and cat at the same time
-		if ( isset( $id ) && $id != '' && isset( $cat ) && $cat != '' ) {
+		if ( isset( $params['id'] ) && $params['id'] != '' && isset( $params['cat'] ) && $params['cat'] != '' ) {
 			return "<strong>ERROR: You cannot set both a single ID and a category ID for your Staff Directory</strong>";
 		}
 
@@ -183,40 +178,40 @@ class Staff_Directory_Shortcode {
 		);
 
 		// check if it's a single staff member first, since single members won't be ordered
-		if ( ( isset( $id ) && $id != '' ) && ( ! isset( $cat ) || $cat == '' ) ) {
-			$query_args['p'] = $id;
+		if ( ( isset( $params['id'] ) && $params['id'] != '' ) && ( ! isset( $params['cat'] ) || $params['cat'] == '' ) ) {
+			$query_args['p'] = $params['id'];
 		}
 		// ends single staff
 
 		// check if we're returning a staff category
-		if ( ( isset( $cat ) && $cat != '' ) && ( ! isset( $id ) || $id == '' ) ) {
-            if (is_numeric($cat)) {
-                $query_args['tax_query'] = array(
-                    array(
-                        'taxonomy' => 'staff_category',
-                        'terms'    => $cat
-                    )
-                );
-            } else {
-                $query_args['tax_query'] = array(
-                    array(
-                        'taxonomy' => 'staff_category',
-                        'terms'    => explode( ',', $cat ),
-                        'field'    => 'slug',
-                        'operator' => 'AND'
-                    )
+		if ( ( isset( $params['cat'] ) && $params['cat'] != '' ) && ( ! isset( $params['id'] ) || $params['id'] == '' ) ) {
+            $cats_query = array();
+
+            $cats = explode( ',', $params['cat'] );
+
+            if (count($cats) > 1) {
+                $cats_query['relation'] = $params['cat_relation'];
+            }
+
+            foreach ($cats as $cat) {
+                $cats_query[] = array(
+                    'taxonomy' => 'staff_category',
+                    'terms'    => $cat,
+                    'field'    => $params['cat_field']
                 );
             }
+
+            $query_args['tax_query'] = $cats_query;
 		}
 
-		if ( isset( $orderby ) && $orderby != '' ) {
-			$query_args['orderby'] = $orderby;
+		if ( isset( $params['orderby'] ) && $params['orderby'] != '' ) {
+			$query_args['orderby'] = $params['orderby'];
 		}
-		if ( isset( $order ) && $order != '' ) {
-			$query_args['order'] = $order;
+		if ( isset( $params['order'] ) && $params['order'] != '' ) {
+			$query_args['order'] = $params['order'];
 		}
-		if ( isset( $meta_key ) && $meta_key != '' ) {
-			$query_args['meta_key'] = $meta_key;
+		if ( isset( $params['meta_key'] ) && $params['meta_key'] != '' ) {
+			$query_args['meta_key'] = $params['meta_key'];
 		}
 
         //Store in class scope so we can access query from staff_loop shortcode
@@ -225,7 +220,7 @@ class Staff_Directory_Shortcode {
         $output = '';
 
         if ( Staff_Directory_Shortcode::$staff_query->have_posts() ) {
-		    $output = self::retrieve_template_html($template);
+		    $output = self::retrieve_template_html($params['template']);
         }
 
         wp_reset_query();
