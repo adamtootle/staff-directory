@@ -228,6 +228,48 @@ class Staff_Directory_Shortcode {
 		return $output;
 	}
 
+    static function custom_pre_shortcode_escaping($html) {
+
+        //Regex pattern to match all shortcodes
+        $pattern   = '/\[[\w\-\/]+[\w\s\"\'\=\-\*\$\@\!]*\]/';
+        $replacers = array();
+
+        //Match all shortcodes in template
+        preg_match_all($pattern, $html, $matches);
+
+        //Take each shortcode, run htmlentities() on it, and push them to $replacers
+        foreach($matches as $shortcode) {
+            $replacers[] = htmlentities($shortcode);
+        }
+
+        //Replace each shortcode with the replacer
+        $html = str_replace($matches, $replacers, $html);
+
+        //Now that we've eliminated all quote marks from $html, we can trick
+        //Wordpress's do_shortcode() so that it doesn't recognize any shortcodes
+        //as being in an html attribute, by replacing all remaining quotes with
+        //a unique string surrounded by < & >
+        $html = str_replace('"', '<|-dbl_quote-|>', $html);
+        $html = str_replace("'", "<|-sgl_quote-|>", $html);
+
+        //Now we've replaced all quotes outside of a shortcode, lets just decode
+        //the shortcodes
+        $html = html_entity_decode($html);
+
+        return $html;
+
+    }
+
+    static function custom_pre_shortcode_decoding($html) {
+
+        //Pretty much just undoing the 'encoding' we did above
+        $html = str_replace('<|-dbl_quote-|>', '"', $html);
+        $html = str_replace("<|-sgl_quote-|>", "'", $html);
+
+        return $html;
+
+    }
+
     static function retrieve_template_html($slug) {
 
         // $slug => 'File Name'
@@ -243,13 +285,21 @@ class Staff_Directory_Shortcode {
             return do_shortcode($template_contents);
         } else {
             $staff_settings = Staff_Directory_Settings::shared_instance();
-            $output        = "";
-            $template      = $staff_settings->get_custom_staff_template_for_slug( $slug );
-            $template_html = html_entity_decode(stripslashes( $template['html'] ));
-            $template_css  = html_entity_decode(stripslashes( $template['css'] ));
+            $output         = "";
+            $template       = $staff_settings->get_custom_staff_template_for_slug( $slug );
+            $template_html  = html_entity_decode(stripslashes( $template['html'] ));
+            $template_css   = html_entity_decode(stripslashes( $template['css'] ));
+
+            //Trick wordpress to not recognize html attributes,
+            //before running do_shortcode()
+            $template_html  = self::custom_pre_shortcode_escaping($template_html);
 
             $output .= "<style type='text/css'>$template_css</style>";
             $output .= do_shortcode($template_html);
+
+            //Now that we've run all the shortcodes, lets un-trick wordpress
+            $output = self::custom_pre_shortcode_decoding($output);
+
             return $output;
         }
     }
