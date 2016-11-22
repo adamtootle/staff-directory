@@ -14,11 +14,8 @@ class Staff_Directory {
 			'Staff_Directory',
 			'custom_staff_admin_columns'
 		), 10, 3 );
-		add_filter( "manage_edit-staff_category_columns", array( 'Staff_Directory', 'set_staff_category_columns' ) );
-		add_filter( "manage_staff_category_custom_column", array(
-			'Staff_Directory',
-			'custom_staff_category_columns'
-		), 10, 3 );
+		add_filter( 'manage_edit-staff_category_columns', array( 'Staff_Directory', 'set_staff_category_columns' ) );
+		add_filter( 'manage_staff_category_custom_column', array( 'Staff_Directory', 'custom_staff_category_columns' ), 10, 3 );
 
 		add_filter( 'enter_title_here', array( 'Staff_Directory', 'staff_title_text' ) );
 		add_filter( 'admin_head', array( 'Staff_Directory', 'remove_media_buttons' ) );
@@ -31,8 +28,11 @@ class Staff_Directory {
 		add_action( 'wp_ajax_get_my_form', array( 'Staff_Directory', 'thickbox_ajax_form' ) );
 		add_action( 'pre_get_posts', array( 'Staff_Directory', 'manage_listing_query' ) );
 
-        //load single-page/profile template
-        add_filter('single_template', array( 'Staff_Directory', 'load_profile_template' ) );
+    //load single-page/profile template
+    add_filter('single_template', array( 'Staff_Directory', 'load_profile_template' ) );
+
+    add_action( 'restrict_manage_posts', array( 'Staff_Directory', 'add_staff_categories_admin_filter' ) );
+    add_action( 'pre_get_posts', array( 'Staff_Directory', 'filter_admin_staff_by_category' ) );
 	}
 
 	static function create_post_types() {
@@ -561,5 +561,48 @@ EOT;
 			$query->set( 'orderby', $orderby );
 			$query->set( 'order', $order );
 		}
+	}
+
+	static function add_staff_categories_admin_filter(){
+    global $post_type;
+
+    if($post_type == 'staff'){
+
+      $staff_category_args = array(
+        'show_option_all'   => 'All Staff Categories',
+        'orderby'           => 'ID',
+        'order'             => 'ASC',
+        'name'              => 'staff_category_admin_filter',
+        'taxonomy'          => 'staff_category'
+      );
+
+      if (isset($_GET['staff_category_admin_filter'])) {
+        $staff_category_args['selected'] = sanitize_text_field($_GET['staff_category_admin_filter']);
+      }
+
+      wp_dropdown_categories($staff_category_args);
+
+    }
+	}
+
+	static function filter_admin_staff_by_category($query) {
+		global $post_type, $pagenow;
+
+    if($pagenow == 'edit.php' && $post_type == 'staff'){
+        if(isset($_GET['staff_category_admin_filter'])){
+
+          $post_format = sanitize_text_field($_GET['staff_category_admin_filter']);
+
+          if($post_format != 0){
+            $query->query_vars['tax_query'] = array(
+              array(
+                'taxonomy'  => 'staff_category',
+                'field'     => 'ID',
+                'terms'     => array($post_format)
+              )
+            );
+          }
+        }
+    } 
 	}
 }
