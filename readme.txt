@@ -3,7 +3,7 @@ Contributors: adamtootle
 Tags: staff directory, staff, employees, team members, faculty
 Requires at least: 2.3.0
 Tested up to: 4.6.1
-Stable Tag: tags/1.1.0
+Stable Tag: tags/1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,10 +31,10 @@ Or you can always submit support requests at [wordpress.org support forums](http
 
 Special thanks to those who have helped out at the Github repo:
 
-[0aveRyan](https://github.com/0aveRyan)
-[ethanclevenger91](https://github.com/ethanclevenger91)
-[timnolte](https://github.com/timnolte)
-[delitestudio](https://github.com/delitestudio)
+[0aveRyan](https://github.com/0aveRyan) <br />
+[ethanclevenger91](https://github.com/ethanclevenger91) <br />
+[timnolte](https://github.com/timnolte) <br />
+[delitestudio](https://github.com/delitestudio) <br />
 [TurqDevDesign](https://github.com/TurqDevDesign)
 
 == Installation ==
@@ -57,6 +57,12 @@ Staff categories are now managed using the internal WordPress category managemen
 4. Set custom staff details and create custom templates
 
 == Changelog ==
+
+= 1.1.1 =
+
+<ul>
+<li>Fixed some bugs introduced in 1.1.0.</li>
+</ul>
 
 = 1.1.0 =
 
