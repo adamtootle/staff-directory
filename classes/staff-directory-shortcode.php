@@ -88,7 +88,7 @@ class Staff_Directory_Shortcode {
     }
 
     static function photo_shortcode(){
-        if(!empty(self::photo_url_shortcode())){
+        if(self::photo_url_shortcode() == false){
             return '<img src="' . self::photo_url_shortcode() . '" />';
         } else {
             return "";
