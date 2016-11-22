@@ -239,7 +239,7 @@ class Staff_Directory_Shortcode {
 
         //Take each shortcode, run htmlentities() on it, and push them to $replacers
         foreach($matches as $shortcode) {
-            $replacers[] = htmlentities($shortcode);
+            $replacers[] = htmlentities($shortcode[0]);
         }
 
         //Replace each shortcode with the replacer
