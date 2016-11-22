@@ -245,7 +245,7 @@ class Staff_Directory_Shortcode {
         //Replace each shortcode with the replacer
         $html = str_replace($matches, $replacers, $html);
 
-        //Now that we've eliminated all quote marks from $html, we can trick
+        //Now that we've eliminated all quote marks from shortcodes, we can trick
         //Wordpress's do_shortcode() so that it doesn't recognize any shortcodes
         //as being in an html attribute, by replacing all remaining quotes with
         //a unique string surrounded by < & >
