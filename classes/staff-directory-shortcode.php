@@ -97,7 +97,12 @@ class Staff_Directory_Shortcode {
     }
 
     static function bio_shortcode(){
-        return get_the_content();
+        // This more or less copies the_content().
+        // Taken straight from https://developer.wordpress.org/reference/functions/the_content/
+        $bio = get_the_content();
+        $bio = apply_filters( 'the_content', $bio );
+        $bio = str_replace( ']]>', ']]&gt;', $bio );
+        return $bio;
     }
 
     static function bio_paragraph_shortcode(){
