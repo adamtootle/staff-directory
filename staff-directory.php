@@ -4,6 +4,8 @@ Plugin Name: Staff Directory
 Plugin URI: https://wordpress.org/plugins/staff-directory/
 Description: Allows Wordpress to keep track of your staff directory for your website. Good for churches, small companies, etc.
 Version: 1.1.1
+Text Domain: staff-directory
+Domain Path: /languages
 Author: Adam Tootle
 Author URI: http://www.adamtootle.com
 */
@@ -15,6 +17,7 @@ define( 'STAFF_DIRECTORY_TABLE', $wpdb->prefix . 'staff_directory' );
 define( 'STAFF_TEMPLATES', $wpdb->prefix . 'staff_directory_templates' );
 define( 'STAFF_PHOTOS_DIRECTORY', WP_CONTENT_DIR . "/uploads/staff-photos/" );
 define( 'STAFF_LIST_TEMPLATES', plugin_dir_path(__FILE__) . "templates/" );
+define( 'STAFF_LANGUAGES_DIRECTORY', basename(dirname(__FILE__)) . '/languages/' );
 
 require_once( dirname( __FILE__ ) . '/classes/staff-directory-settings.php' );
 
@@ -23,6 +26,8 @@ Staff_Directory_Settings::setup_defaults();
 require_once( dirname( __FILE__ ) . '/classes/staff-directory.php' );
 require_once( dirname( __FILE__ ) . '/classes/staff-directory-shortcode.php' );
 require_once( dirname( __FILE__ ) . '/classes/staff-directory-admin.php' );
+
+add_action( 'init', array( 'Staff_Directory', 'load_textdomain' ) );
 
 Staff_Directory::register_post_types();
 Staff_Directory::set_default_meta_fields_if_necessary();

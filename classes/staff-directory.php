@@ -39,7 +39,7 @@ class Staff_Directory {
 		register_post_type( 'staff',
 			array(
 				'labels'     => array(
-					'name' => __( 'Staff' )
+					'name' => __( 'Staff', 'staff-directory' )
 				),
 				'supports'   => array(
 					'title',
@@ -57,17 +57,17 @@ class Staff_Directory {
 		register_taxonomy( 'staff_category', 'staff', array(
 			'hierarchical' => true,
 			'labels'       => array(
-				'name'              => _x( 'Staff Category', 'taxonomy general name' ),
-				'singular_name'     => _x( 'staff-category', 'taxonomy singular name' ),
-				'search_items'      => __( 'Search Staff Categories' ),
-				'all_items'         => __( 'All Staff Categories' ),
-				'parent_item'       => __( 'Parent Staff Category' ),
-				'parent_item_colon' => __( 'Parent Staff Category:' ),
-				'edit_item'         => __( 'Edit Staff Category' ),
-				'update_item'       => __( 'Update Staff Category' ),
-				'add_new_item'      => __( 'Add New Staff Category' ),
-				'new_item_name'     => __( 'New Staff Category Name' ),
-				'menu_name'         => __( 'Staff Categories' ),
+				'name'              => _x( 'Staff Category', 'taxonomy general name', 'staff-directory' ),
+				'singular_name'     => _x( 'staff-category', 'taxonomy singular name', 'staff-directory' ),
+				'search_items'      => __( 'Search Staff Categories', 'staff-directory' ),
+				'all_items'         => __( 'All Staff Categories', 'staff-directory' ),
+				'parent_item'       => __( 'Parent Staff Category', 'staff-directory' ),
+				'parent_item_colon' => __( 'Parent Staff Category:', 'staff-directory' ),
+				'edit_item'         => __( 'Edit Staff Category', 'staff-directory' ),
+				'update_item'       => __( 'Update Staff Category', 'staff-directory' ),
+				'add_new_item'      => __( 'Add New Staff Category', 'staff-directory' ),
+				'new_item_name'     => __( 'New Staff Category Name', 'staff-directory' ),
+				'menu_name'         => __( 'Staff Categories', 'staff-directory' ),
 			),
 			'rewrite'      => array(
 				'slug'         => 'staff-categories',
@@ -75,6 +75,10 @@ class Staff_Directory {
 				'hierarchical' => true
 			),
 		) );
+	}
+
+	static function load_textdomain() {
+		load_plugin_textdomain('staff-directory', false, STAFF_LANGUAGES_DIRECTORY);
 	}
 
     static function load_profile_template($original){
@@ -103,10 +107,10 @@ class Staff_Directory {
 	static function set_staff_admin_columns() {
 		$new_columns = array(
 			'cb'             => '<input type="checkbox" />',
-			'title'          => __( 'Title' ),
-			'id'             => __( 'ID' ),
-			'featured_image' => __( 'Featured Image' ),
-			'date'           => __( 'Date' )
+			'title'          => __( 'Title', 'staff-directory' ),
+			'id'             => __( 'ID', 'staff-directory' ),
+			'featured_image' => __( 'Featured Image', 'staff-directory' ),
+			'date'           => __( 'Date', 'staff-directory' )
 		);
 
 		return $new_columns;
@@ -134,11 +138,11 @@ class Staff_Directory {
 	static function set_staff_category_columns() {
 		$new_columns = array(
 			'cb'          => '<input type="checkbox" />',
-			'name'        => __( 'Name' ),
-			'id'          => __( 'ID' ),
-			'description' => __( 'Description' ),
-			'slug'        => __( 'Slug' ),
-			'posts'       => __( 'Posts' )
+			'name'        => __( 'Name', 'staff-directory' ),
+			'id'          => __( 'ID', 'staff-directory' ),
+			'description' => __( 'Description', 'staff-directory' ),
+			'slug'        => __( 'Slug', 'staff-directory' ),
+			'posts'       => __( 'Posts', 'staff-directory' )
 		);
 
 		return $new_columns;
@@ -183,7 +187,7 @@ class Staff_Directory {
 	}
 
 	static function add_staff_custom_meta_boxes() {
-		add_meta_box( 'staff-meta-box', __( 'Staff Details' ), array(
+		add_meta_box( 'staff-meta-box', __( 'Staff Details', 'staff-directory' ), array(
 			'Staff_Directory',
 			'staff_meta_box_output'
 		), 'staff', 'normal', 'high' );
