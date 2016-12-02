@@ -9,6 +9,7 @@ class Staff_Directory {
 	static function register_post_types() {
 		add_action( 'init', array( 'Staff_Directory', 'create_post_types' ) );
 		add_action( 'init', array( 'Staff_Directory', 'create_staff_taxonomies' ) );
+		add_action( 'init', array( 'Staff_Directory', 'load_textdomain' ) );
 		add_filter( "manage_edit-staff_columns", array( 'Staff_Directory', 'set_staff_admin_columns' ) );
 		add_filter( "manage_staff_posts_custom_column", array(
 			'Staff_Directory',
@@ -75,6 +76,10 @@ class Staff_Directory {
 				'hierarchical' => true
 			),
 		) );
+	}
+
+	static function load_textdomain() {
+		load_plugin_textdomain('staff-directory', false, basename(dirname(__FILE__)) . '/languages/');
 	}
 
     static function load_profile_template($original){

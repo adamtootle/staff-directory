@@ -4,6 +4,8 @@ Plugin Name: Staff Directory
 Plugin URI: https://wordpress.org/plugins/staff-directory/
 Description: Allows Wordpress to keep track of your staff directory for your website. Good for churches, small companies, etc.
 Version: 1.1.1
+Text Domain: staff-directory
+Domain Path: /languages
 Author: Adam Tootle
 Author URI: http://www.adamtootle.com
 */
