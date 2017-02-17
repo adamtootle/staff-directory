@@ -153,7 +153,7 @@
 
     <h2>Single profile templates</h2>
 
-    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'staff_single_'.</p>
+    <p>Custom templates can be created by adding a php file to your theme directory with the prefix 'single-staff-'.</p>
 
     <p>
         <select name="staff_single_template">
