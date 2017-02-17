@@ -25,7 +25,12 @@ Features:
 
 Questions?
 
-Preferred - Submit pull requests to the [Github repo](https://github.com/adamtootle/staff-directory).
+Most preferred:
+
+Submit pull requests to the [Github repo](https://github.com/adamtootle/staff-directory).
+
+Least preferred (less frequented by the author):
+
 Tweet me - [@adamtootle](https://twitter.com/adamtootle)
 Or you can always submit support requests at [wordpress.org support forums](https://wordpress.org/support/plugin/staff-directory).
 
@@ -57,6 +62,14 @@ Staff categories are now managed using the internal WordPress category managemen
 4. Set custom staff details and create custom templates
 
 == Changelog ==
+
+= 1.1.2 =
+
+<ul>
+<li>Fixed a bug for php versions older than 5.5</li>
+<li>Added a category filter to the admin staff list</li>
+<li>Fixed an issue with the [bio] shortcode stripping out line breaks.</li>
+</ul>
 
 = 1.1.1 =
 
