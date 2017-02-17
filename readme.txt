@@ -23,6 +23,12 @@ Features:
 <li>Support for multiple templates. You can choose a default as well as choose set a template for use with the [staff-directory] shortcode.</li>
 </ul>
 
+
+Friendly reminder: PHP 5.4 has been officially [unsupported since September 2015](http://php.net/eol.php).
+There was an issue with this plugin where older versions of PHP were crashing.
+There's no real incentive on behalf of the author to make sure older/unsupported/unsafe versions of PHP work perfectly.
+Sorry if that's an inconvenience. PRs are always welcomed on the [Github repo](https://github.com/adamtootle/staff-directory)
+
 Questions?
 
 Most preferred:
