@@ -24,10 +24,7 @@ Features:
 </ul>
 
 
-Friendly reminder: PHP 5.4 has been officially [unsupported since September 2015](http://php.net/eol.php).
-There was an issue with this plugin where older versions of PHP were crashing.
-There's no real incentive on behalf of the author to make sure older/unsupported/unsafe versions of PHP work perfectly.
-Sorry if that's an inconvenience. PRs are always welcomed on the [Github repo](https://github.com/adamtootle/staff-directory)
+Friendly reminder: PHP 5.4 has been officially [unsupported since September 2015](http://php.net/eol.php). There was an issue with this plugin where older versions of PHP were crashing. There's no real incentive on behalf of the author to make sure older/unsupported/unsafe versions of PHP work perfectly. I'll do what I can but I can't always promise older versions will work. Sorry if that's an inconvenience. PRs are always welcomed on the [Github repo](https://github.com/adamtootle/staff-directory)
 
 Questions?
 
