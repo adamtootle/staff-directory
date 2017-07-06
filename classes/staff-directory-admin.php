@@ -52,6 +52,13 @@ class Staff_Directory_Admin {
 		$current_template = $staff_settings->get_current_default_staff_template();
 		$custom_templates = $staff_settings->get_custom_staff_templates();
 
+		if ( isset($_POST['staff_url_rewrite']) ) {
+			if ($_POST['staff_url_rewrite'] != get_option('staff_url_rewrite', 'staff')) {
+				$needs_rewrite_rules_flushed = true;
+				update_option('staff_url_rewrite', $_POST['staff_url_rewrite']);
+			}
+		}
+
 		require_once( plugin_dir_path( __FILE__ ) . '../views/admin-settings.php' );
 	}
 

@@ -42,7 +42,7 @@
     display: none;
   }
   .form-group {
-    margin-bottom: 50px;
+    /*margin-bottom: 50px;*/
   }
   .custom-template {
     display: none;
@@ -58,11 +58,23 @@
   .staff-template-textarea-wrapper textarea {
     height: 170px;
   }
+  .save-staff-settings {
+    margin-top: 40px !important;
+  }
+  h2 {
+    margin-top: 40px;
+  }
+  h2:first-child {
+    margin-top: 15px;
+  }
 </style>
 
 <?php if($did_update_options): ?>
   <div id="message" class="updated notice notice-success is-dismissible below-h2 staff-success-message">
-    <p>Settings updated.</p>
+    <p>Settings updated. 
+    <?php if($needs_rewrite_rules_flushed): ?>
+      You may need to re-save <a href="<?php echo get_admin_url(); ?>options-permalink.php">permalinks</a> after changing the staff url rewrite.
+    <?php endif; ?></p>
   </div>
 <?php endif; ?>
 
@@ -219,11 +231,24 @@
       </div>
     </div>
 
+    <h2>Staff url rewrite</h2>
+
+    <p>
+      By default, staff member urls are rewritten using <code>staff</code>, ex: <code>www.dundermifflin.com/staff/jim</code>
+      <br />
+      You can change that value here. Ex: setting this field to <code>sales</code> would result in <code>www.dundermifflin.com/sales/jim</code>
+      <br />
+      NOTE: You may need to re-save <a href="<?php echo get_admin_url(); ?>options-permalink.php">permalinks</a> after you change this to tell WordPress to update its rewrite rules.
+    </p>
+
+    <label for="staff_url_rewrite">URL Rewrite:</label>
+    <input type="text" name="staff_url_rewrite" id="staff_url_rewrite" value="<?php echo get_option('staff_url_rewrite', 'staff'); ?>" />
+
   </div>
 
   <div class="clear"></div>
 
   <p>
-    <input type="submit" class="button button-primary button-large" value="Save">
+    <input type="submit" class="button button-primary button-large save-staff-settings" value="Save">
   </p>
 </form>

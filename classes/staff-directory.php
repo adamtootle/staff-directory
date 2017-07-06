@@ -48,7 +48,10 @@ class Staff_Directory {
 				),
 				'public'     => true,
 				'menu_icon'  => 'dashicons-groups',
-				'taxonomies' => array( 'staff_category' )
+				'taxonomies' => array( 'staff_category' ),
+				'rewrite' => array(
+					'slug' => get_option('staff_url_rewrite', 'staff')
+				)
 			)
 		);
 	}
