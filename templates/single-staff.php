@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
             <?php
-                $published = get_post_status( $post->$ID ) == 'published' ? '.published' : '';
+                $published = get_post_status( $post->ID ) == 'published' ? '.published' : '';
             ?>
 
 			<div id="content">
