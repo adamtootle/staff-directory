@@ -242,10 +242,11 @@ class Staff_Directory_Shortcode {
 
         //Match all shortcodes in template
         preg_match_all($pattern, $html, $matches);
+        $matches = $matches[0];
 
         //Take each shortcode, run htmlentities() on it, and push them to $replacers
         foreach($matches as $shortcode) {
-            $replacers[] = htmlentities($shortcode[0]);
+            $replacers[] = htmlentities($shortcode);
         }
 
         //Replace each shortcode with the replacer
